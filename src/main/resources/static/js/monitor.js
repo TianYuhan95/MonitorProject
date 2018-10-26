@@ -1,5 +1,8 @@
 window.onload = function () {
 	firstAJAX();
+	var w = $(".monitor-dropdown > button").css("width");
+	console.log("haha : " + w);
+	$(".monitor-dropdown-menu").css("width", w);
     updateECharts();
     updateHTML();
     updateEvent();
@@ -458,8 +461,11 @@ function updateOrderChart(chartName, data) {
 	    legend: [
 		    {
 		    	selectedMode: 'single',
+		    	selected: {
+		    		'执行失败': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -485,7 +491,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/执行失败.png'
+				                image: './image/执行失败.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -496,7 +502,7 @@ function updateOrderChart(chartName, data) {
 		    {
 		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -522,7 +528,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/等待执行.png'
+				                image: './image/等待执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -533,7 +539,7 @@ function updateOrderChart(chartName, data) {
 		    {
 		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -559,7 +565,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/正在执行.png'
+				                image: './image/正在执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -570,7 +576,7 @@ function updateOrderChart(chartName, data) {
 		    {
 		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -596,7 +602,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/已经执行.png'
+				                image: './image/已经执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -607,7 +613,7 @@ function updateOrderChart(chartName, data) {
 	    ],
 	    series: [
 	        {
-	            name:'执行失败1',
+	            name:'指令执行1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -842,7 +848,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/执行失败.png'
+				                image: './image/执行失败.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -883,7 +889,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/等待执行.png'
+				                image: './image/等待执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -924,7 +930,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/正在执行.png'
+				                image: './image/正在执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -965,7 +971,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/已经执行.png'
+				                image: './image/已经执行.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -986,7 +992,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['75%', '79%'],
-	            center: ['25%', '50%'],
+	            center: ['30%', '50%'],
 	            avoidLabelOverlap: false,
 	            legendHoverLink: false,
 	            label: {
@@ -1017,7 +1023,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['82%', '86%'],
-	            center: ['25%', '50%'],
+	            center: ['30%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
@@ -1047,7 +1053,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['89%', '93%'],
-	            center: ['25%', '50%'],
+	            center: ['30%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
@@ -1077,7 +1083,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['96%', '100%'],
-	            center: ['25%', '50%'],
+	            center: ['30%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
@@ -1107,7 +1113,7 @@ function updateTradeChart(chartName, data) {
 	        //     hoverAnimation:false,
 	        //     silence: true,
 	        //     radius: ['96%', '100%'],
-	        //     center: ['25%', '50%'],
+	        //     center: ['30%', '50%'],
 	        //     avoidLabelOverlap: false,
 	        //     label: {
 	        //         normal: {
