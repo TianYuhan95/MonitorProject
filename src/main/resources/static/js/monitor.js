@@ -1,8 +1,5 @@
 window.onload = function () {
-	firstAJAX();
-	var w = $(".monitor-dropdown > button").css("width");
-	console.log("haha : " + w);
-	$(".monitor-dropdown-menu").css("width", w);
+	firstAJAX(firstUpdate);
     updateECharts();
     updateHTML();
     updateEvent();
@@ -16,7 +13,7 @@ window.onresize = function () {
 }
 
 // 获取所有迁转信息与当前迁转标识
-function firstAJAX() {
+function firstAJAX(callback) {
     $.ajax(
 	    {
 	    	async : false,
@@ -27,6 +24,7 @@ function firstAJAX() {
 	        {
 	        	console.log(data);
 	        	trans_data = data;
+	        	callback();
 	        },
 	        error : function (e)  
 	        {
@@ -35,6 +33,18 @@ function firstAJAX() {
 	    }
     );
     trans_id = $("#trans_id").text();
+}
+
+function firstUpdate() {
+	// 更新大标题菜单
+	var w = $(".monitor-dropdown > button").css("width");
+	console.log("haha : " + w);
+	$(".monitor-dropdown-menu").css("width", w);
+	
+	for (var i = 0; i < trans_data.length; i++) {
+		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
+	}
+	$(".monitor-dropdown-menu").append(newItem);
 }
 
 var server_url = 'http://:8080';
@@ -128,11 +138,6 @@ function updateHTML() {
 		$('#monitor-real-info > tbody').append(newRow);
 	}
 
-	// 更新大标题菜单
-	for (var i = 0; i < trans_data.length; i++) {
-		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
-	}
-	$(".monitor-dropdown-menu").append(newItem);
 }
 
 // 绑定各种事件
@@ -179,12 +184,12 @@ function updateECharts() {
     myChart3 = echarts.init(document.getElementById("part6"));
     myChart5 = echarts.init(document.getElementById("part8"));
 	// 获取各种数据
-	// getOrderData(updateOrderChart);
-	updateOrderChart(orderChart, order_data);
-	// getTradeData(updateTradeChart);
-	// getFeeData(drawPolyline);
-	// getPaylogData(drawPolyline);
-	// getStopData(drawPolyline);
+	getOrderData(updateOrderChart);
+	// updateOrderChart(orderChart, order_data);
+	getTradeData(updateTradeChart);
+	getFeeData(drawPolyline);
+	getPaylogData(drawPolyline);
+	getStopData(drawPolyline);
 }
 
 // 获取指令执行数据
