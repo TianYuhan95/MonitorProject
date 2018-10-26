@@ -1,5 +1,40 @@
 .monitor-dropdown > button {
-	/*width: 150px;*/
+	background-color: #494553;
+	border-color: #494553;
+	color: #C6CDD7;
+	font-size: 24px;
+	line-height: 33px;
+	height: 60px;
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+.monitor-dropdown > button:hover {
+	background-color: #373242;
+}
+
+.monitor-dropdown > button:focus {
+	background-color: #373242;
+	box-shadow: 0 0 0 1px #5F6379;
+}
+
+.monitor-dropdown-menu {
+	background-color: #5D5868;
+	padding: 0px;
+}
+
+.monitor-dropdown-menu > a {
+	color: #C6CDD7;
+	font-size: 28px;
+	line-height: 40px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+.monitor-dropdown-menu > a:hover {
+	background-color: #413C4E;
 }
 
 .all-info-card {
@@ -120,4 +155,8 @@
 .pre-scrollable::-webkit-scrollbar-track {
 	width: 10px;
     background: #544F61;
+}
+
+.fixed-thead {
+	margin-bottom: 0px;
 }
