@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:ORCL
+    username: FACT
+    password: FACT_123
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      #additional-exclude: src/main/resources/static
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8

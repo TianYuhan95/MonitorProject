@@ -1,0 +1,123 @@
+.monitor-dropdown > button {
+	/*width: 150px;*/
+}
+
+.all-info-card {
+	height: 25px;
+}
+
+.all-info-card > .card-title {
+	font-size: 18px;
+	line-height: 25px;
+}
+
+.all-info-card > .card-text {
+	font-size: 42px;
+	line-height: 50px;
+	color: #9AFFA3;
+	font-family: Helvetica;
+}
+
+.all-info-card > .progress {
+	background-color: #888888;
+	width: 200px;
+	height: 6px;
+	border-radius: 25px;
+}
+
+.all-info-card > .progress > .progress-bar {
+	background-color: #9AFFA3;
+	border-radius: 25px;
+}
+
+.monitor-nav-pills > .nav-item > .nav-link {
+	color: #B1B4BD;
+	font-size: 18px;
+	line-height: 25px;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.monitor-nav-pills > .nav-item > .active {
+	color: #9AFFA3;
+}
+
+.monitor-dashboard-pills > .nav-item > .nav-link {
+	color: #B1B4BD;
+	font-size: 24px;
+	line-height: 33px;
+	background-color: rgba(0, 0, 0, 0);
+	padding-top: 0px;
+}
+
+.monitor-dashboard-pills > .nav-item > .active {
+	color: #9AFFA3;
+}
+
+.card {
+	margin-bottom: 12px;
+}
+
+.nav-dot-divider > .nav-link {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.monitor-table-title {
+	font-size: 24px;
+	line-height: 33px;
+}
+
+.monitor-table-ul > li {
+	padding-left: 30px;
+	padding-right: 30px;
+	overflow: hidden;
+}
+
+.monitor-table-ul > li > div {
+	max-height: 320px;
+}
+
+.monitor-table-ul > li > div > table {
+	table-layout: fixed;
+}
+
+.monitor-table-ul > li > div > table > thead > tr > th {
+	font-size: 18px;
+	line-height: 25px;
+	color: #C6CDD7;
+	font-weight: 350;
+	border-top: 1px solid #494553;
+	border-bottom: 1px solid #888888;
+}
+
+.monitor-table-ul > li > div > table > tbody > tr > td {
+	font-size: 18px;
+	line-height: 25px;
+	color: #F0F0F0;
+	font-weight: 340;
+	border-top: 1px solid #888888;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow:ellipsis;
+	-moz-text-overflow: ellipsis;
+	-webkit-text-overflow: ellipsis;
+}
+
+#id > div {
+	background-color: #494553;
+}
+
+.pre-scrollable::-webkit-scrollbar {
+	width: 10px;
+}
+
+.pre-scrollable::-webkit-scrollbar-thumb {
+	width: 8px;
+	background-color: #696C81;
+    border-radius: 25px;
+}
+
+.pre-scrollable::-webkit-scrollbar-track {
+	width: 10px;
+    background: #544F61;
+}
