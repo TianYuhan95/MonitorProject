@@ -1,3 +1,8 @@
+.row > div {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
 .monitor-dropdown > button {
 	background-color: #494553;
 	border-color: #494553;
@@ -35,6 +40,12 @@
 
 .monitor-dropdown-menu > a:hover {
 	background-color: #413C4E;
+	color: #C6CDD7;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+	background-color: #413C4E;
+	color: #C6CDD7;
 }
 
 .all-info-card {
@@ -48,9 +59,9 @@
 
 .all-info-card > .card-text {
 	font-size: 42px;
+	font-weight: 350;
 	line-height: 50px;
 	color: #9AFFA3;
-	font-family: Helvetica;
 }
 
 .all-info-card > .progress {
