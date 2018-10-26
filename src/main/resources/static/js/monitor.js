@@ -1,8 +1,5 @@
 window.onload = function () {
 	firstAJAX();
-	var w = $(".monitor-dropdown > button").css("width");
-	console.log("haha : " + w);
-	$(".monitor-dropdown-menu").css("width", w);
     updateECharts();
     updateHTML();
     updateEvent();
@@ -129,6 +126,10 @@ function updateHTML() {
 	}
 
 	// 更新大标题菜单
+	var w = $(".monitor-dropdown > button").css("width");
+	console.log("haha : " + w);
+	$(".monitor-dropdown-menu").css("width", w);
+	
 	for (var i = 0; i < trans_data.length; i++) {
 		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
 	}
@@ -179,12 +180,12 @@ function updateECharts() {
     myChart3 = echarts.init(document.getElementById("part6"));
     myChart5 = echarts.init(document.getElementById("part8"));
 	// 获取各种数据
-	// getOrderData(updateOrderChart);
-	updateOrderChart(orderChart, order_data);
-	// getTradeData(updateTradeChart);
-	// getFeeData(drawPolyline);
-	// getPaylogData(drawPolyline);
-	// getStopData(drawPolyline);
+	getOrderData(updateOrderChart);
+	// updateOrderChart(orderChart, order_data);
+	getTradeData(updateTradeChart);
+	getFeeData(drawPolyline);
+	getPaylogData(drawPolyline);
+	getStopData(drawPolyline);
 }
 
 // 获取指令执行数据
