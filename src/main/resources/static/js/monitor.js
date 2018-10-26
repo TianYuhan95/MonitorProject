@@ -1,5 +1,5 @@
 window.onload = function () {
-	firstAJAX();
+	firstAJAX(firstUpdate);
     updateECharts();
     updateHTML();
     updateEvent();
@@ -13,7 +13,7 @@ window.onresize = function () {
 }
 
 // 获取所有迁转信息与当前迁转标识
-function firstAJAX() {
+function firstAJAX(callback) {
     $.ajax(
 	    {
 	    	async : false,
@@ -24,6 +24,7 @@ function firstAJAX() {
 	        {
 	        	console.log(data);
 	        	trans_data = data;
+	        	callback();
 	        },
 	        error : function (e)  
 	        {
@@ -32,6 +33,18 @@ function firstAJAX() {
 	    }
     );
     trans_id = $("#trans_id").text();
+}
+
+function firstUpdate() {
+	// 更新大标题菜单
+	var w = $(".monitor-dropdown > button").css("width");
+	console.log("haha : " + w);
+	$(".monitor-dropdown-menu").css("width", w);
+	
+	for (var i = 0; i < trans_data.length; i++) {
+		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
+	}
+	$(".monitor-dropdown-menu").append(newItem);
 }
 
 var server_url = 'http://:8080';
@@ -125,15 +138,6 @@ function updateHTML() {
 		$('#monitor-real-info > tbody').append(newRow);
 	}
 
-	// 更新大标题菜单
-	var w = $(".monitor-dropdown > button").css("width");
-	console.log("haha : " + w);
-	$(".monitor-dropdown-menu").css("width", w);
-	
-	for (var i = 0; i < trans_data.length; i++) {
-		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
-	}
-	$(".monitor-dropdown-menu").append(newItem);
 }
 
 // 绑定各种事件
