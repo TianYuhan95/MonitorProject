@@ -35,15 +35,9 @@ function firstUpdate() {
 	console.log("haha : " + w);
 	$(".monitor-dropdown-menu").css("width", w);
 	
-	// for (var i = 0; i < trans_data.length; i++) {
-	// 	var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
-	// 	console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
-	// 	$(".monitor-dropdown-menu").append(newItem);
-	// }
-	
 	for (var i = 0; i < trans_data.length; i++) {
-		var newItem = "<form action='index' method='post'><input style='display: none' type='text' name='version_control' value='"
-						+ trans_data[i]["version_control"] + "'/><input type='submit' value='"
+		var newItem = "<form action='' method='post'><input style='display: none' type='text' name='version' value='"
+						+ trans_data[i]["version_control"] + "'/><input class='dropdown-item' type='submit' value='"
 						+ trans_data[i]["trans_name"] + "' /></form>";
 		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
 		$(".monitor-dropdown-menu").append(newItem);
@@ -151,28 +145,6 @@ function updateHTML() {
 
 // 绑定各种事件
 function updateEvent() {
-	// $(".monitor-dropdown-menu").on('click', 'a', function () {
-	// 	var id;
-	// 	for (var i = 0; i < trans_data.length; i++) {
-	// 		if (trans_data[i]["trans_name"] == $(this).text()) {
-	// 			id = trans_data[i]["version_control"];
-	// 			console.log("迁转id : ------ " + id);
-	// 			$.ajax({
-	// 		        type : "post",
-	// 		        url : server_url + "/index",
-	// 		        data : {
-	// 		        	"version" : id
-	// 		        },
-	// 		        dataType : "json",
-	// 		        success : function (data) {
-	// 		        	window.location.reload();
-	// 		        },
-	// 		        error : function (e) {}
-	// 			});
-	// 			break;
-	// 		}
-	// 	}
-	// });
 
     $("#pills-trade-tab").click(function () {
         updateTradeChart(tradeChart, trade_data);

@@ -28,7 +28,7 @@
 	padding: 0px;
 }
 
-.monitor-dropdown-menu > a {
+.monitor-dropdown-menu > form > input {
 	color: #C6CDD7;
 	font-size: 28px;
 	line-height: 40px;
@@ -38,7 +38,7 @@
 	padding-right: 18px;
 }
 
-.monitor-dropdown-menu > a:hover {
+.monitor-dropdown-menu > form > input:hover {
 	background-color: #413C4E;
 	color: #C6CDD7;
 }
