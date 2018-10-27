@@ -42,7 +42,7 @@ function firstUpdate() {
 	// }
 	
 	for (var i = 0; i < trans_data.length; i++) {
-		var newItem = "<form action='index' method='post'><input type='text' name='version_control' value='"
+		var newItem = "<form action='index' method='post'><input style='display: none' type='text' name='version_control' value='"
 						+ trans_data[i]["version_control"] + "'/><input type='submit' value='"
 						+ trans_data[i]["trans_name"] + "' /></form>";
 		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
