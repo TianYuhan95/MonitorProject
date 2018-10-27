@@ -42,11 +42,7 @@ function firstUpdate() {
 	// }
 	
 	for (var i = 0; i < trans_data.length; i++) {
-<<<<<<< HEAD
-		var newItem = "<form action='' method='post'><input type='text' name='version' value='"
-=======
 		var newItem = "<form action='index' method='post'><input style='display: none' type='text' name='version_control' value='"
->>>>>>> 5042f6d9bfdc77510acf59a6942135095f989203
 						+ trans_data[i]["version_control"] + "'/><input type='submit' value='"
 						+ trans_data[i]["trans_name"] + "' /></form>";
 		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
