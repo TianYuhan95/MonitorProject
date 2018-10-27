@@ -26,6 +26,7 @@ function firstAJAX(callback) {
 	    }
     );
     trans_id = $("#version").text();
+    console.log(trans_id);
 }
 
 function firstUpdate() {

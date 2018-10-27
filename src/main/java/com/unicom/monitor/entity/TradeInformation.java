@@ -17,6 +17,8 @@ public class TradeInformation {
     private String trade_success;
     //记录总指令数
     private String trade_sum;
+    //版本号
+    private String version_control;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,5 +68,13 @@ public class TradeInformation {
 
     public void setTrade_sum(String trade_sum) {
         this.trade_sum = trade_sum;
+    }
+
+    public String getVersion_control() {
+        return version_control;
+    }
+
+    public void setVersion_control(String version_control) {
+        this.version_control = version_control;
     }
 }

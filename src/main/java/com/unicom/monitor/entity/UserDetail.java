@@ -25,6 +25,8 @@ public class UserDetail {
     private String update_time;
     //停机时间
     private String stop_time;
+    //版本号
+    private String version_control;
 
     public String getNet_type_code() {
         return net_type_code;
@@ -80,5 +82,13 @@ public class UserDetail {
 
     public void setStop_time(String stop_time) {
         this.stop_time = stop_time;
+    }
+
+    public String getVersion_control() {
+        return version_control;
+    }
+
+    public void setVersion_control(String version_control) {
+        this.version_control = version_control;
     }
 }

@@ -23,6 +23,8 @@ public class OrderInformation {
     private String order_success;
     //记录总指令数
     private String order_sum;
+    //版本号
+    private String version_control;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -72,5 +74,13 @@ public class OrderInformation {
 
     public void setOrder_sum(String order_sum) {
         this.order_sum = order_sum;
+    }
+
+    public String getVersion_control() {
+        return version_control;
+    }
+
+    public void setVersion_control(String version_control) {
+        this.version_control = version_control;
     }
 }

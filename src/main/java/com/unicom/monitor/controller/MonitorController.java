@@ -35,10 +35,17 @@ public class MonitorController {
         return "temp";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/index/allInformation", method = RequestMethod.POST)
+    public List<AllInformation> allInformations() {
+        List<AllInformation> list = null;
+        list = monitorService.AllInformation_findByAll();
+        return list;
+    }
+
     @RequestMapping(value = "/index",method = RequestMethod.POST)
     public String Index(Model model, @RequestParam(value = "version") String version){
         try{
-            System.out.println(version);
             model.addAttribute("allInformation",monitorService.AllInformation_findByAll());
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee(version));
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop(version));
@@ -54,6 +61,7 @@ public class MonitorController {
     @ResponseBody
     @RequestMapping(value = "/index/order",method = RequestMethod.POST)
     public OrderInformation orderInformation( @RequestParam(value = "version") String version){
+        System.out.println(version);
         if(!(monitorService.Order_findAll(version)==null)){
             list_orderInformation = null;
             list_orderInformation = monitorService.Order_findAll(version);
@@ -65,6 +73,7 @@ public class MonitorController {
     @ResponseBody
     @RequestMapping(value = "/index/trade",method = RequestMethod.POST)
     public List<TradeInformation> tradeInformation( @RequestParam(value = "version") String version){
+        System.out.println(version);
         if(!(monitorService.Trade_findAll(version).isEmpty())){
             list_tradeInformation = null;
             list_tradeInformation = monitorService.Trade_findAll(version);

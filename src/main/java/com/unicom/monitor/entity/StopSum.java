@@ -18,6 +18,8 @@ public class StopSum {
     private String sum_num;
     //更新时间
     private String update_time;
+    //版本号
+    private String version_control;
     @Id
     public String getRecord_time() {
         return record_time;
@@ -49,5 +51,13 @@ public class StopSum {
 
     public void setUpdate_time(String update_time) {
         this.update_time = update_time;
+    }
+
+    public String getVersion_control() {
+        return version_control;
+    }
+
+    public void setVersion_control(String version_control) {
+        this.version_control = version_control;
     }
 }
