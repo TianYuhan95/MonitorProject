@@ -15,7 +15,7 @@ function firstAJAX(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("前传信息数据 : ");
+				console.log("迁转 : ");
 	        	console.log(data);
 	        	trans_data = data;
 	        	callback();
@@ -143,35 +143,11 @@ function updateHTML() {
 
 // 绑定各种事件
 function updateEvent() {
-	// var menuItems = $(".monitor-dropdown-menu").children();
-	// for (var i = 0; i < menuItems.length; i++) {
-	// 	var id;
-	// 	for (var j = 0; j < trans_data.length; j++) {
-	// 		if (trans_data[j]["trans_name"] == menuItems[i].text()) {
-	// 			id = trans_data[j]["trans_id"];
-	// 			break;
-	// 		}
-	// 	}
-	// 	menuItems[i].click(function () {
-	// 		$.ajax({
-	// 	        type : "post",
-	// 	        url : server_url + "/index",
-	// 	        data : {
-	// 	        	"version" : id
-	// 	        },
-	// 	        dataType : "json",
-	// 	        success : function (data) {},
-	// 	        error : function (e) {}
-	// 		});
-	// 	});
-	// }
 	$(".monitor-dropdown-menu").on('click', 'a', function () {
 		var id;
 		for (var i = 0; i < trans_data.length; i++) {
 			if (trans_data[i]["trans_name"] == $(this).text()) {
 				id = trans_data[i]["trans_id"];
-				console.log("迁转 : ");
-	        	console.log(data);
 				$.ajax({
 			        type : "post",
 			        url : server_url + "/index",
