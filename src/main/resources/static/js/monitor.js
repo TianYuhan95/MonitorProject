@@ -148,11 +148,12 @@ function updateEvent() {
 		for (var i = 0; i < trans_data.length; i++) {
 			if (trans_data[i]["trans_name"] == $(this).text()) {
 				id = trans_data[i]["trans_id"];
+				console.log("迁转id : ------ " + id);
 				$.ajax({
 			        type : "post",
 			        url : server_url + "/index",
 			        data : {
-			        	version : id
+			        	"version" : id
 			        },
 			        dataType : "json",
 			        success : function (data) {},
