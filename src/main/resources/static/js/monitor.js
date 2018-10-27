@@ -136,7 +136,6 @@ function updateHTML() {
 		+ "</td></tr>";
 		$('#monitor-real-info > tbody').append(newRow);
 	}
-
 }
 
 // 绑定各种事件
@@ -251,6 +250,7 @@ function getTradeData(callback) {
 function getFeeData(callback) {
     $.ajax(
 	    {
+	    	async : false,
 	        type : "post",
 	        url : server_url + "/index/leave_real_fee",
 	        data : {
@@ -292,9 +292,10 @@ function getFeeData(callback) {
 }
 
 // 获取缴费记录数据
-function getPaylogData() {
+function getPaylogData(callback) {
     $.ajax(
 	    {
+	    	async : false,
 	        type : "post",
 	        url : server_url + "/index/paylog",
 	        data : {
@@ -333,6 +334,7 @@ function getPaylogData() {
 function getTradeData(callback) {
     $.ajax(
 	    {
+	    	async : false,
 	        type : "post",
 	        url : server_url + "/index/trade",
 	        data : {
@@ -367,9 +369,10 @@ function getTradeData(callback) {
 }
 
 // 获取信控停机数据
-function getStopData() {
+function getStopData(callback) {
     $.ajax(
 	    {
+	    	async : false,
 	        type : "post",
 	        url : server_url + "/index/stop_sum",
 	        data : {
