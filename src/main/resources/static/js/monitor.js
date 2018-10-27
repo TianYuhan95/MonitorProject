@@ -158,7 +158,7 @@ function updateEvent() {
 			        },
 			        dataType : "json",
 			        success : function (data) {
-			        	window.location.reload();
+			        	window.reload();
 			        },
 			        error : function (e) {}
 				});

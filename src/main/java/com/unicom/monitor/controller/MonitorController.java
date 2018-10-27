@@ -55,7 +55,7 @@ public class MonitorController {
             e.printStackTrace();
             System.out.println("Index Controller Had Exception");
         }
-        return "temp";
+        return "redirect:/temp";
     }
 
     @CrossOrigin(origins = "*")
