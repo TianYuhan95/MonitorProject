@@ -19,7 +19,7 @@ public class MonitorController {
     public static OrderInformation list_orderInformation = null;
     public static List<Paylog> list_payLog = null;
     public static List<StopSum> list_stopSum = null;
-    public static  List<TradeInformation> list_tradeInformation = null;
+    public static TradeInformation list_tradeInformation = null;
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String Index(Model model){
@@ -73,9 +73,9 @@ public class MonitorController {
     @CrossOrigin(origins = "*")
     @ResponseBody
     @RequestMapping(value = "/index/trade",method = RequestMethod.POST)
-    public List<TradeInformation> tradeInformation( @RequestParam(value = "version") String version){
+    public TradeInformation tradeInformation( @RequestParam(value = "version") String version){
         System.out.println(version);
-        if(!(monitorService.Trade_findAll(version).isEmpty())){
+        if(!(monitorService.Trade_findAll(version)==null)){
             list_tradeInformation = null;
             list_tradeInformation = monitorService.Trade_findAll(version);
         }

@@ -47,15 +47,15 @@ public class MonitorService {
         return list;
     }
 
-    public List<TradeInformation> Trade_findAll(String version){
-        List<TradeInformation> list = null;
+    public TradeInformation Trade_findAll(String version){
+        TradeInformation tradeInformation = null;
         try{
-            list = tradeInformationRepository.findByAll(version);
+            tradeInformation = tradeInformationRepository.findByAll(version);
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Trade Service Had Exception");
         }
-        return list;
+        return tradeInformation;
     }
 
     public List<Paylog> Paylog_findAll(String version){
