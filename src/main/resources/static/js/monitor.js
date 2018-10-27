@@ -5,13 +5,6 @@ window.onload = function () {
     updateEvent();
 }
 
-window.onresize = function () {
-    orderChart.resize();
-    myChart2.resize();
-    myChart3.resize();
-    myChart5.resize();
-}
-
 // 获取所有迁转信息与当前迁转标识
 function firstAJAX(callback) {
     $.ajax(
@@ -22,7 +15,7 @@ function firstAJAX(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log(data);
+	        	console.log("前传信息数据 : " + data);
 	        	trans_data = data;
 	        	callback();
 	        },
@@ -32,7 +25,7 @@ function firstAJAX(callback) {
 	        }
 	    }
     );
-    trans_id = $("#trans_id").text();
+    trans_id = $("#version").text();
 }
 
 function firstUpdate() {
@@ -47,7 +40,7 @@ function firstUpdate() {
 	$(".monitor-dropdown-menu").append(newItem);
 }
 
-var server_url = 'http://:8080';
+var server_url = 'http://localhost:8080';
 var trans_id;
 
 var orderChart;
@@ -94,6 +87,12 @@ var trade_data;
 var stop_data;
 
 function updateHTML() {
+	if (fee_data == undefined || paylog_data == undefined || stop_data == undefined) {
+		var newRow = "<tr><td>木有数据"
+		+ "</td>╮（╯＿╰）╭<td></td><td></td><td></td></tr>";
+		$('#monitor-real-info > tbody').append(newRow);
+		return;
+	}
 
 	// 更新实时监控统计表
 	var latest_fee = [ fee_data[fee_data.length - 1], fee_data[fee_data.length - 2],
@@ -156,7 +155,7 @@ function updateEvent() {
 		        type : "post",
 		        url : server_url + "/index",
 		        data : {
-		        	"version_control" : id
+		        	"version" : id
 		        },
 		        dataType : "json",
 		        success : function (data) {},
@@ -183,9 +182,15 @@ function updateECharts() {
     myChart2 = echarts.init(document.getElementById("part5"));
     myChart3 = echarts.init(document.getElementById("part6"));
     myChart5 = echarts.init(document.getElementById("part8"));
+
+	window.onresize = function () {
+	    orderChart.resize();
+	    myChart2.resize();
+	    myChart3.resize();
+	    myChart5.resize();
+	}
 	// 获取各种数据
 	getOrderData(updateOrderChart);
-	// updateOrderChart(orderChart, order_data);
 	getTradeData(updateTradeChart);
 	getFeeData(drawPolyline);
 	getPaylogData(drawPolyline);
@@ -200,12 +205,12 @@ function getOrderData(callback) {
 	        type : "post",
 	        url : server_url + "/index/order",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log(data);
+	        	console.log("指令数据 : " + data);
 	        	order_data = data;
 	        	callback(orderChart, order_data)
 	        },
@@ -225,12 +230,12 @@ function getTradeData(callback) {
 	        type : "post",
 	        url : server_url + "/index/trade",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log(data);
+	        	console.log("业务数据 : " + data);
 	        	trade_data = data;
 	        	callback(tradeChart, trade_data)
 	        },
@@ -249,11 +254,12 @@ function getFeeData(callback) {
 	        type : "post",
 	        url : server_url + "/index/leave_real_fee",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("实时话费数据 : " + data);
 	        	if(data){
 		        	fee_data = data;
 		        	for(var i = 0; i < fee_data.length; i++){
@@ -292,11 +298,12 @@ function getPaylogData() {
 	        type : "post",
 	        url : server_url + "/index/paylog",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("缴费记录数据 : " + data);
 	        	if(data){
 		        	paylog_data = data;
 		        	for(var i = 0; i < paylog_data.length; i++){
@@ -323,17 +330,18 @@ function getPaylogData() {
 }
 
 // 获取业务受理数据
-function getTradeData() {
+function getTradeData(callback) {
     $.ajax(
 	    {
 	        type : "post",
 	        url : server_url + "/index/trade",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("业务受理数据 : " + data);
 	        	if(data){
 		        	trade_data = data;
 		        	for(var i = 0; i < trade_data.length; i++){
@@ -365,11 +373,12 @@ function getStopData() {
 	        type : "post",
 	        url : server_url + "/index/stop_sum",
 	        data : {
-	        	"version_control" : trans_id
+	        	"version" : trans_id
 	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("信控停机数据 : " + data);
 	        	if(data){
 		        	stop_data = data;
 		        	for(var i = 0; i < stop_data.length; i++){
@@ -496,7 +505,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/执行失败.png'
+				                image: '../static/image/fail.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -533,7 +542,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/等待执行.png'
+				                image: '../static/image/wait.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -570,7 +579,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/正在执行.png'
+				                image: '../static/image/exec.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -607,7 +616,7 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/已经执行.png'
+				                image: '../static/image/success.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -853,7 +862,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/执行失败.png'
+				                image: '../static/image/fail.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -894,7 +903,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/等待执行.png'
+				                image: '../static/image/wait.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -935,7 +944,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/正在执行.png'
+				                image: '../static/image/exec.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -976,7 +985,7 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: './image/已经执行.png'
+				                image: '../static/image/success.png'
 				            },
 				            width: 26,
 				            height: 4
@@ -1207,28 +1216,28 @@ function drawPolyline(myChart2, yData) {
 		            },
 		            c: {
 		            	backgroundColor: {
-			                image: '../static/image/移网GSM用户.png'
+			                image: '../static/image/gsm.png'
 			            },
 			            width: 26,
 			            height: 4
 		            },
 		             d: {
 		            	backgroundColor: {
-			                image: '../static/image/宽固用户.png'
+			                image: '../static/image/adsl.png'
 			            },
 			            width: 26,
 			            height: 4
 		            },
 		            e: {
 		            	backgroundColor: {
-			                image: '../static/image/移网OCS用户.png'
+			                image: '../static/image/ocs.png'
 			            },
 			            width: 26,
 			            height: 4
 		            }, 
 		             f: {
 		            	backgroundColor: {
-			                image: '../static/image/APN用户.png'
+			                image: '../static/image/apn.png'
 			            },
 			            width: 26,
 			            height: 4
