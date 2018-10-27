@@ -1170,6 +1170,9 @@ function drawPolyline(myChart2, yData) {
 	option = {
 		tooltip: {
 		    trigger: 'axis',
+		    axisPointer:{
+		    	type:'cross',
+		    },
 		    formatter: function(params){
 		    	var time = params[0].name;
 				var res = '<div><p>时间：'+ time +'</p></div>';
@@ -1285,23 +1288,39 @@ function drawPolyline(myChart2, yData) {
 		    {
 		        name:'移网GSM用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[0],
-		       itemStyle : {
-		        normal : {
-		            lineStyle:{
-		                width:2,//折线宽度
-		                color:"#28E5E6"//折线颜色
-		            }
-		        }
-		    },	         
+			    itemStyle : {
+			        normal : {
+			            lineStyle:{
+			                width:2,//折线宽度
+			                color:"#28E5E6"//折线颜色
+			            }
+			        }
+			    },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#28E5E6' // 0% 处的颜色
+
+		                    }, {
+		                        offset: 1, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },		            		
+	            	}
+	            },		    	         
 		    },
 		    {
 		        name:'宽固用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[1],
@@ -1312,12 +1331,29 @@ function drawPolyline(myChart2, yData) {
 		                    color:"#FB4C72"//折线颜色
 		                }
 		            }
-		        },	         
+		        },	
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#FB4C72' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },
+		              	// opacity:0.3	            		
+	            	}
+	            },		                 
 		    },
 		    {
 		        name:'移网OCS用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',
 		        data:yData[2],
@@ -1328,12 +1364,30 @@ function drawPolyline(myChart2, yData) {
 		                    color:"#FDBA44"//折线颜色
 		                }
 		            }
-		        },	                  
+		        },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#FDBA44' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }, 
+		                    ],
+		                    globalCoord: false // 缺省为 false
+		                },
+	            	},
+	                opacity:0.3
+	            },			        	                  
 		    },
 		    {
 		        name:'APN用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[3],
@@ -1345,6 +1399,23 @@ function drawPolyline(myChart2, yData) {
 		                }
 		            }
 		        },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2: 0,
+		                    y2: 1,
+		                    colorStops: [{
+		                        offset: 0, color: '#DC32FB' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },
+	            	}
+	            },			        
 		    },
 		]
 	};
