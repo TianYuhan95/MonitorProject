@@ -39,8 +39,8 @@ function firstUpdate() {
 	for (var i = 0; i < trans_data.length; i++) {
 		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
 		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
+		$(".monitor-dropdown-menu").append(newItem);
 	}
-	$(".monitor-dropdown-menu").append(newItem);
 }
 
 var server_url = 'http://localhost:8080';
@@ -153,7 +153,7 @@ function updateEvent() {
 			        type : "post",
 			        url : server_url + "/index",
 			        data : {
-			        	"version" : id
+			        	version : id
 			        },
 			        dataType : "json",
 			        success : function (data) {},
