@@ -147,7 +147,7 @@ function updateEvent() {
 		var id;
 		for (var i = 0; i < trans_data.length; i++) {
 			if (trans_data[i]["trans_name"] == $(this).text()) {
-				id = trans_data[i]["trans_id"];
+				id = trans_data[i]["version_control"];
 				console.log("迁转id : ------ " + id);
 				$.ajax({
 			        type : "post",
