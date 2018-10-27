@@ -20,7 +20,7 @@ function firstAJAX(callback) {
 	        	trans_data = data;
 	        	callback();
 	        },
-	        error : function (e)  
+	        error : function (e)
 	        {
 	            alert("总数据获取失败");
 	        }
@@ -37,6 +37,7 @@ function firstUpdate() {
 	
 	for (var i = 0; i < trans_data.length; i++) {
 		var newItem = "<a class='dropdown-item'>" + trans_data[i]["trans_name"] + "</a>";
+		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
 	}
 	$(".monitor-dropdown-menu").append(newItem);
 }
