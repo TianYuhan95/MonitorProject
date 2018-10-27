@@ -954,7 +954,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['75%', '79%'],
-	            center: ['30%', '50%'],
+	            center: ['25%', '50%'],
 	            avoidLabelOverlap: false,
 	            legendHoverLink: false,
 	            label: {
@@ -988,7 +988,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['82%', '86%'],
-	            center: ['30%', '50%'],
+	            center: ['25%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
@@ -1021,7 +1021,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['89%', '93%'],
-	            center: ['30%', '50%'],
+	            center: ['25%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
@@ -1054,7 +1054,7 @@ function updateTradeChart(chartName, data) {
 	            hoverAnimation:false,
 	            silence: true,
 	            radius: ['96%', '100%'],
-	            center: ['30%', '50%'],
+	            center: ['25%', '50%'],
 	            avoidLabelOverlap: false,
 	            label: {
 	                normal: {
