@@ -828,15 +828,16 @@ function updateTradeChart(chartName, data) {
     chartName.setOption(
     {
 	    tooltip: {
-	        trigger: 'none',
-	        position: ['15%', '37%'],
-	        showContent: true,
-	        alwaysShowContent: true
+	        trigger: 'none'
 	    },
 	    legend: [
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务失败': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -869,15 +870,14 @@ function updateTradeChart(chartName, data) {
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_fail'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务等待': false
+		    	},
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -910,15 +910,14 @@ function updateTradeChart(chartName, data) {
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_wait'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务执行': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -951,15 +950,14 @@ function updateTradeChart(chartName, data) {
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_exec'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务成功': false
+		    	},
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -992,16 +990,11 @@ function updateTradeChart(chartName, data) {
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_success'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    }
 	    ],
 	    series: [
 	        {
-	            name:'业务失败',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1016,11 +1009,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务失败',
+		                name:'业务失败1',
 	                	value: tradeInfo['trade_fail'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#C6CDD7'
+	                			color: {
+	                				image: document.getElementById("grey"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1032,7 +1028,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1046,11 +1042,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务等待',
+		                name:'业务等待1',
 	                	value: tradeInfo['trade_wait'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FDBA44'
+	                			color: {
+	                				image: document.getElementById("yellow"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1062,7 +1061,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1076,11 +1075,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务执行',
+		                name:'业务执行1',
 	                	value: tradeInfo['trade_exec'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FB4C72'
+	                			color: {
+	                				image: document.getElementById("red"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1092,7 +1094,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1106,11 +1108,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务成功',
+		                name:'业务成功1',
 	                	value: tradeInfo['trade_success'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#28E5E6'
+	                			color: {
+	                				image: document.getElementById("blue"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1121,38 +1126,55 @@ function updateTradeChart(chartName, data) {
 		            }
 	            ]
 	        },
-	        // {
-	        //     name:'指令执行',
-	        //     type:'pie',
-	        //     hoverAnimation:false,
-	        //     silence: true,
-	        //     radius: ['96%', '100%'],
-	        //     center: ['30%', '50%'],
-	        //     avoidLabelOverlap: false,
-	        //     label: {
-	        //         normal: {
-	        //             show: false
-	        //         }
-	        //     },
-	        //     data:[
-	        //         {
-		       //          name:'执行失败',
-	        //         	value: tradeInfo['trade_success'],
-		       //      },
-	        //         {
-		       //          name:'等待执行',
-	        //         	value: tradeInfo['trade_success'],
-		       //      },
-	        //         {
-		       //          name:'正在执行',
-	        //         	value: tradeInfo['trade_success'],
-		       //      },
-	        //         {
-		       //          name:'已经执行',
-	        //         	value: tradeInfo['trade_success'],
-		       //      },
-	        //     ]
-	        // }
+	        {
+	            name:'业务受理',
+	            type:'pie',
+	            hoverAnimation:false,
+	            silence: true,
+	            radius: ['0%', '0%'],
+	            center: ['25%', '50%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    position: 'center',
+	                    formatter: '{c|{c}}\n    {b|{b}}  ',
+	                    backgroundColor: '#494553',
+	                    rich: {
+	                        b: {
+	                        	color: '#C6CDD7',
+	                            fontSize: 16,
+	                            lineHeight: 33
+	                        },
+	                        c: {
+	                            color: '#F0F0F0',
+	                        	fontSize: 36,
+	                        	lineHeight: 50,
+	                        }
+	                    }
+	                }
+	            },
+	            labelLine: {
+	            	show: false
+	            },
+	            data:[
+	                {
+		                name:'业务失败',
+	                	value: tradeInfo['trade_fail'],
+		            },
+	                {
+		                name:'业务等待',
+	                	value: tradeInfo['trade_wait'],
+		            },
+	                {
+		                name:'业务执行',
+	                	value: tradeInfo['trade_exec'],
+		            },
+	                {
+		                name:'业务成功',
+	                	value: tradeInfo['trade_success'],
+		            },
+	            ]
+	        }
 	    ]
     }
     );
