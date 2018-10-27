@@ -153,7 +153,7 @@ function updateEvent() {
 			        type : "post",
 			        url : server_url + "/index",
 			        data : {
-			        	version : id
+			        	"version" : id
 			        },
 			        dataType : "json",
 			        success : function (data) {},
