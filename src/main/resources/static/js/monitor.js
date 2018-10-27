@@ -351,44 +351,6 @@ function getPaylogData(callback) {
     );
 }
 
-// 获取业务受理数据
-function getTradeData(callback) {
-    $.ajax(
-	    {
-	    	async : false,
-	        type : "post",
-	        url : server_url + "/index/trade",
-	        data : {
-	        	"version" : trans_id
-	        },
-	        dataType : "json",
-	        success : function (data)
-	        {
-	        	console.log("业务受理数据 : " + data);
-	        	if(data){
-		        	trade_data = data;
-		        	for(var i = 0; i < trade_data.length; i++){
-		        		switch(trade_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData3[0].push(trade_data[i]['trade_sum']); break;
-		        			case '宽固用户':    yData3[1].push(trade_data[i]['trade_sum']);	break;
-		        			case '移网OCS用户':  yData3[2].push(trade_data[i]['trade_sum']); break;
-		        			case 'APN用户': yData3[3].push(trade_data[i]['trade_sum']);	break;
-		        			default: break;
-		        		}
-		        	};
-		        	callback(myChart4, yData3); 	
-	        	}else{
-	        		alert("业务受理数据为空");
-	        	}
-	        },
-	        error : function (e)  
-	        {
-	            alert("业务受理数据获取失败");
-	        }
-	    }
-    );
-}
-
 // 获取信控停机数据
 function getStopData(callback) {
     $.ajax(
