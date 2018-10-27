@@ -134,4 +134,15 @@ public class MonitorService {
         }
         return list;
     }
+
+    public AllInformation AllInformation_findByAll(String version) {
+        AllInformation allInformation = null;
+        try{
+            allInformation = allInformationRepository.findByAll(version);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("AllInformation_FindByAll(version) Service Had Exception");
+        }
+        return allInformation;
+    }
 }

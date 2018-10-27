@@ -45,8 +45,9 @@ public class MonitorController {
 
     @RequestMapping(value = "/index",method = RequestMethod.POST)
     public String Index(Model model, @RequestParam(value = "version") String version){
+        System.out.println(version);
         try{
-            model.addAttribute("allInformation",monitorService.AllInformation_findByAll());
+            model.addAttribute("allInformation",monitorService.AllInformation_findByAll(version));
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee(version));
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop(version));
 
