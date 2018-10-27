@@ -15,7 +15,8 @@ function firstAJAX(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("前传信息数据 : " + data);
+	        	console.log("前传信息数据 : ");
+	        	console.log(data);
 	        	trans_data = data;
 	        	callback();
 	        },
@@ -45,6 +46,7 @@ var server_url = 'http://localhost:8080';
 var trans_id;
 
 var orderChart;
+var tradeChart;
 var myChart2;
 var myChart3;
 var myChart5;
@@ -168,7 +170,8 @@ function updateEvent() {
 		for (var i = 0; i < trans_data.length; i++) {
 			if (trans_data[i]["trans_name"] == $(this).text()) {
 				id = trans_data[i]["trans_id"];
-				console.log("迁转 : " + id);
+				console.log("迁转 : ");
+	        	console.log(data);
 				$.ajax({
 			        type : "post",
 			        url : server_url + "/index",
@@ -199,12 +202,14 @@ function updateEvent() {
 function updateECharts() {
 
     orderChart = echarts.init(document.getElementById("order"));
+    tradeChart = echarts.init(document.getElementById("trade"));
     myChart2 = echarts.init(document.getElementById("part5"));
     myChart3 = echarts.init(document.getElementById("part6"));
     myChart5 = echarts.init(document.getElementById("part8"));
 
 	window.onresize = function () {
 	    orderChart.resize();
+	    tradeChart.resize();
 	    myChart2.resize();
 	    myChart3.resize();
 	    myChart5.resize();
@@ -230,7 +235,8 @@ function getOrderData(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("指令数据 : " + data);
+	        	console.log("指令数据 : ");
+	        	console.log(data);
 	        	order_data = data;
 	        	callback(orderChart, order_data)
 	        },
@@ -255,7 +261,8 @@ function getTradeData(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("业务数据 : " + data);
+	        	console.log("业务数据 : ");
+	        	console.log(data);
 	        	trade_data = data;
 	        	callback(tradeChart, trade_data)
 	        },
@@ -280,7 +287,8 @@ function getFeeData(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("实时话费数据 : " + data);
+	        	console.log("实时话费数据 : ");
+	        	console.log(data);
 	        	if(data){
 		        	fee_data = data;
 		        	for(var i = 0; i < fee_data.length; i++){
@@ -325,7 +333,8 @@ function getPaylogData(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("缴费记录数据 : " + data);
+	        	console.log("缴费记录数据 : ");
+	        	console.log(data);
 	        	if(data){
 		        	paylog_data = data;
 		        	for(var i = 0; i < paylog_data.length; i++){
@@ -364,7 +373,8 @@ function getStopData(callback) {
 	        dataType : "json",
 	        success : function (data)
 	        {
-	        	console.log("信控停机数据 : " + data);
+	        	console.log("信控停机数据 : ");
+	        	console.log(data);
 	        	if(data){
 		        	stop_data = data;
 		        	for(var i = 0; i < stop_data.length; i++){
@@ -1464,24 +1474,6 @@ function payRecord(){
 		}
 	}
 	alert("缴费记录数据为空!!!");
-}
-
-//点击业务受理
-function doBusiness(){
-	for(var i = 0 ; i < yData3.length; i++){
-		if(yData3[i].length > 0){
-			drawPolyline(myChart4,yData3);
-		    var chart2div=document.getElementById('part7');
-		    var tabcontent = document.getElementById('pills-tabContent1');
-		    var width=tabcontent.offsetWidth ;
-		    var height=tabcontent.offsetHeight;
-		    chart2div.style.width=width+'px';
-		    chart2div.style.height=height+'px';
-		    myChart4.resize();
-		    return;			
-		}
-	}
-	alert("业务受理数据为空!!!");
 }
 
 function creditStop() {
