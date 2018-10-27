@@ -82,13 +82,6 @@ public class AllInformation {
         this.trans_apn_num = trans_apn_num;
     }
 
-    public String getIs_valid() {
-        return is_valid;
-    }
-
-    public void setIs_valid(String is_valid) {
-        this.is_valid = is_valid;
-    }
 
     public String getVersion_control() {
         return version_control;
@@ -96,5 +89,13 @@ public class AllInformation {
 
     public void setVersion_control(String version_control) {
         this.version_control = version_control;
+    }
+
+    public String getIs_valid() {
+        return is_valid;
+    }
+
+    public void setIs_valid(String is_valid) {
+        this.is_valid = is_valid;
     }
 }
