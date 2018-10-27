@@ -27,7 +27,6 @@ function firstAJAX(callback) {
 	    }
     );
     trans_id = $("#version").text();
-    console.log(trans_id);
 }
 
 function firstUpdate() {
@@ -158,7 +157,7 @@ function updateEvent() {
 			        },
 			        dataType : "json",
 			        success : function (data) {
-			        	window.reload();
+			        	window.location.reload();
 			        },
 			        error : function (e) {}
 				});
