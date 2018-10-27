@@ -156,7 +156,9 @@ function updateEvent() {
 			        	"version" : id
 			        },
 			        dataType : "json",
-			        success : function (data) {},
+			        success : function (data) {
+			        	window.location.reload();
+			        },
 			        error : function (e) {}
 				});
 				break;
