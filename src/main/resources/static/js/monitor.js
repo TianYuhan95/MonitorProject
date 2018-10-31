@@ -44,7 +44,7 @@ function firstUpdate() {
 	}
 }
 
-var server_url = 'http://localhost:8080';
+var server_url = 'http://10.0.84.51:8080';
 var trans_id;
 
 var orderChart;
