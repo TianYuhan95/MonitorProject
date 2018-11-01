@@ -1,29 +1,54 @@
-window.onload = function() {
+window.onload = function () {
+	firstAJAX(firstUpdate);
+    updateECharts();
+    updateHTML();
+    updateEvent();
+}
 
-	$("div").mousemove(function() {
-	    $("#order").children("div").css("background-color", "#494553");
-	    $("#trade").children("div").css("background-color", "#494553");
-	});
-    // $("#pills-order-tab").click(function () {
-    //     updateOrderChart(orderChart, order_data);
-    // });
-    $("#pills-trade-tab").click(function () {
-        updateTradeChart(tradeChart, trade_data);
-        var trade=document.getElementById('trade');
-        var tabcontent = document.getElementById('pills-tabContent');
-        var width=tabcontent.offsetWidth;
-        var height=tabcontent.offsetHeight;
-        trade.style.width=width+'px';
-        trade.style.height=height+'px';
-        tradeChart.resize();
-    });
+// 获取所有迁转信息与当前迁转标识
+function firstAJAX(callback) {
+    $.ajax(
+	    {
+	    	async : false,
+	        type : "post",
+	        url : server_url + "/index/allInformation",
+	        dataType : "json",
+	        success : function (data)
+	        {
+				console.log("迁转 : ");
+	        	console.log(data);
+	        	trans_data = data;
+	        	callback();
+	        },
+	        error : function (e)
+	        {
+	            alert("总数据获取失败");
+	        }
+	    }
+    );
+    trans_id = $("#version").text();
+}
+
+function firstUpdate() {
+	// 更新大标题菜单
+	var w = $(".monitor-dropdown > button").css("width");
+	console.log("haha : " + w);
+	$(".monitor-dropdown-menu").css("width", w);
+	
+	for (var i = 0; i < trans_data.length; i++) {
+		var newItem = "<form action='' method='post'><input style='display: none' type='text' name='version' value='"
+						+ trans_data[i]["version_control"] + "'/><input class='dropdown-item' type='submit' value='"
+						+ trans_data[i]["trans_name"] + "' /></form>";
+		console.log("增加" + trans_data[i]["trans_name"] + "菜单项");
+		$(".monitor-dropdown-menu").append(newItem);
+	}
 }
 
 var server_url = 'http://localhost:8080';
-var app = angular.module('myApp', []);
+var trans_id;
 
-var tradeChart;
 var orderChart;
+var tradeChart;
 var myChart2;
 var myChart3;
 var myChart5;
@@ -52,25 +77,35 @@ for (var i =0; i < 4; i++){
 	yData4[i] = new Array();
 };
 
-var order_data;
+var order_data = {
+	"order_sum" : 6666,
+	"order_wait" : 2222,
+	"order_exec" : 3333,
+	"order_fail" : 4444,
+	"order_success" : 5555
+};
+var trans_data;
 var user_data;
 var fee_data;
 var paylog_data;
 var trade_data;
 var stop_data;
 
-app.controller('myCtrl', function ($scope, $filter)
-	{
-        updateECharts();
-	    updateHTML();
-	}
-);
-
 function updateHTML() {
+	if (fee_data == undefined || paylog_data == undefined || stop_data == undefined) {
+		var newRow = "<tr><td>木有数据"
+		+ "</td>╮（╯＿╰）╭<td></td><td></td><td></td></tr>";
+		$('#monitor-real-info > tbody').append(newRow);
+		return;
+	}
 
-	var latest_fee = [ fee_data[fee_data.length - 1], fee_data[fee_data.length - 2], fee_data[fee_data.length - 3], fee_data[fee_data.length - 4] ];
-	var latest_paylog = [ paylog_data[paylog_data.length - 1], paylog_data[paylog_data.length - 2], paylog_data[paylog_data.length - 3], paylog_data[paylog_data.length - 4] ];
-	var latest_stop = [ stop_data[stop_data.length - 1], stop_data[stop_data.length - 2], stop_data[stop_data.length - 3], stop_data[stop_data.length - 4] ];
+	// 更新实时监控统计表
+	var latest_fee = [ fee_data[fee_data.length - 1], fee_data[fee_data.length - 2],
+						fee_data[fee_data.length - 3], fee_data[fee_data.length - 4] ];
+	var latest_paylog = [ paylog_data[paylog_data.length - 1], paylog_data[paylog_data.length - 2],
+						paylog_data[paylog_data.length - 3], paylog_data[paylog_data.length - 4] ];
+	var latest_stop = [ stop_data[stop_data.length - 1], stop_data[stop_data.length - 2],
+						stop_data[stop_data.length - 3], stop_data[stop_data.length - 4] ];
 
 	var net_type = [ "移网GSM用户", "宽固用户", "移网OCS用户", "APN用户" ];
 	var latest_info = {};
@@ -79,31 +114,19 @@ function updateHTML() {
 		var data_array = [];
 		for (var j = 0; j < latest_fee.length; j++) {
 			if (latest_fee[j]['net_type_code'] == net_type[i]) {
-				if (latest_fee[j]['sum_fee'] == 0) {
-                    data_array.push("0");
-				} else {
-					data_array.push(latest_fee[j]['sum_fee']);
-				}
+				data_array.push(latest_fee[j]['sum_fee']);
 				break;
 			}
 		}
 		for (var j = 0; j < latest_paylog.length; j++) {
 			if (latest_paylog[j]['net_type_code'] == net_type[i]) {
-                if (latest_paylog[j]['sum_num'] == 0) {
-                    data_array.push("0");
-                } else {
-					data_array.push(latest_paylog[j]['sum_num']);
-                }
+				data_array.push(latest_paylog[j]['sum_num']);
 				break;
 			}
 		}
 		for (var j = 0; j < latest_stop.length; j++) {
 			if (latest_stop[j]['net_type_code'] == net_type[i]) {
-                if (latest_stop[j]['sum_num'] == 0) {
-                    data_array.push("0");
-                } else {
-					data_array.push(latest_stop[j]['sum_num']);
-                }
+				data_array.push(latest_stop[j]['sum_num']);
 				break;
 			}
 		}
@@ -120,6 +143,21 @@ function updateHTML() {
 	}
 }
 
+// 绑定各种事件
+function updateEvent() {
+
+    $("#pills-trade-tab").click(function () {
+        updateTradeChart(tradeChart, trade_data);
+        var trade = document.getElementById('trade');
+        var tabcontent = document.getElementById('pills-tabContent');
+        var width = tabcontent.offsetWidth;
+        var height = tabcontent.offsetHeight;
+        trade.style.width = width + 'px';
+        trade.style.height = height + 'px';
+        tradeChart.resize();
+    });
+}
+
 function updateECharts() {
 
     orderChart = echarts.init(document.getElementById("order"));
@@ -127,26 +165,20 @@ function updateECharts() {
     myChart2 = echarts.init(document.getElementById("part5"));
     myChart3 = echarts.init(document.getElementById("part6"));
     myChart5 = echarts.init(document.getElementById("part8"));
+
+	window.onresize = function () {
+	    orderChart.resize();
+	    tradeChart.resize();
+	    myChart2.resize();
+	    myChart3.resize();
+	    myChart5.resize();
+	}
 	// 获取各种数据
+	getOrderData(updateOrderChart);
+	getTradeData(updateTradeChart);
 	getFeeData(drawPolyline);
 	getPaylogData(drawPolyline);
-	// getTradeData(drawPolyline);
 	getStopData(drawPolyline);
-    getOrderData(updateOrderChart);
-    getTradeData(updateTradeChart);
-
-    // 基于准备好的dom，初始化echarts实例
-    window.onresize = function(argument) {
-        // orderChart.resize();
-        myChart2.resize();
-        myChart3.resize();
-        myChart5.resize();
-    };
-    // orderChart.showLoading();
-    // tradeChart.showLoading();
-    // myChart2.showLoading();
-    // myChart3.showLoading();
-    // myChart5.showLoading();
 }
 
 // 获取指令执行数据
@@ -154,14 +186,18 @@ function getOrderData(callback) {
     $.ajax(
 	    {
 	    	async : false,
-	        type : "get",
+	        type : "post",
 	        url : server_url + "/index/order",
+	        data : {
+	        	"version" : trans_id
+	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("指令数据 : ");
 	        	console.log(data);
 	        	order_data = data;
-	        	callback(orderChart, order_data);
+	        	callback(orderChart, order_data)
 	        },
 	        error : function (e)  
 	        {
@@ -175,15 +211,19 @@ function getOrderData(callback) {
 function getTradeData(callback) {
     $.ajax(
 	    {
-            async : false,
-	        type : "get",
+	    	async : false,
+	        type : "post",
 	        url : server_url + "/index/trade",
+	        data : {
+	        	"version" : trans_id
+	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("业务数据 : ");
 	        	console.log(data);
-	        	trade_data = data[0];
-	        	// callback(tradeChart, trade_data);
+	        	trade_data = data;
+	        	callback(tradeChart, trade_data)
 	        },
 	        error : function (e)  
 	        {
@@ -197,15 +237,18 @@ function getTradeData(callback) {
 function getFeeData(callback) {
     $.ajax(
 	    {
-            async : false,
-	        type : "get",
+	    	async : false,
+	        type : "post",
 	        url : server_url + "/index/leave_real_fee",
+	        data : {
+	        	"version" : trans_id
+	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("实时话费数据 : ");
 	        	console.log(data);
 	        	if(data){
-                    console.log("getFeeData");
 		        	fee_data = data;
 		        	for(var i = 0; i < fee_data.length; i++){
 		        		//x轴数据
@@ -213,15 +256,13 @@ function getFeeData(callback) {
 		        		// var time = date1.getHours()+':'+ date1.getMinutes();
 		        		var date = fee_data[i]['record_time'];
 		        		var time = date.substring(11);
-                        if(!isInArray(xData,time)){
-                            xData.unshift(time);
-                        }
+		        		xData.push(time);
 		        		// y轴数据;
 		        		switch(fee_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData1[0].unshift(fee_data[i]['sum_fee']); break;
-		        			case '宽固用户':    yData1[1].unshift(fee_data[i]['sum_fee']);	break;
-		        			case '移网OCS用户':  yData1[2].unshift(fee_data[i]['sum_fee']); break;
-		        			case 'APN用户': yData1[3].unshift(fee_data[i]['sum_fee']);	break;
+		        			case '移网GSM用户': yData1[0].push(fee_data[i]['sum_fee']); break;
+		        			case '宽固用户':    yData1[1].push(fee_data[i]['sum_fee']);	break;
+		        			case '移网OCS用户':  yData1[2].push(fee_data[i]['sum_fee']); break;
+		        			case 'APN用户': yData1[3].push(fee_data[i]['sum_fee']);	break;
 		        			default: break;
 		        		}
 		        	}
@@ -242,20 +283,25 @@ function getFeeData(callback) {
 function getPaylogData(callback) {
     $.ajax(
 	    {
-            async : false,
-	        type : "get",
+	    	async : false,
+	        type : "post",
 	        url : server_url + "/index/paylog",
+	        data : {
+	        	"version" : trans_id
+	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("缴费记录数据 : ");
+	        	console.log(data);
 	        	if(data){
 		        	paylog_data = data;
 		        	for(var i = 0; i < paylog_data.length; i++){
 		        		switch(paylog_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData2[0].unshift(paylog_data[i]['sum_num']); break;
-		        			case '宽固用户':    yData2[1].unshift(paylog_data[i]['sum_num']);	break;
-		        			case '移网OCS用户':  yData2[2].unshift(paylog_data[i]['sum_num']); break;
-		        			case 'APN用户': yData2[3].unshift(paylog_data[i]['sum_num']);	break;
+		        			case '移网GSM用户': yData2[0].push(paylog_data[i]['sum_num']); break;
+		        			case '宽固用户':    yData2[1].push(paylog_data[i]['sum_num']);	break;
+		        			case '移网OCS用户':  yData2[2].push(paylog_data[i]['sum_num']); break;
+		        			case 'APN用户': yData2[3].push(paylog_data[i]['sum_num']);	break;
 		        			default: break;
 		        		}
 		        	};
@@ -273,58 +319,29 @@ function getPaylogData(callback) {
     );
 }
 
-// 获取业务受理数据
-// function getTradeData(callback) {
-//     $.ajax(
-// 	    {
-// 	        type : "get",
-// 	        url : server_url + "/index/trade",
-// 	        dataType : "json",
-// 	        success : function (data)
-// 	        {
-// 	        	if(data){
-// 		        	trade_data = data;
-// 		        	for(var i = 0; i < trade_data.length; i++){
-// 		        		switch(trade_data[i]['net_type_code']){
-// 		        			case '移网GSM用户': yData3[0].push(trade_data[i]['trade_sum']); break;
-// 		        			case '宽固用户':    yData3[1].push(trade_data[i]['trade_sum']);	break;
-// 		        			case '移网OCS用户':  yData3[2].push(trade_data[i]['trade_sum']); break;
-// 		        			case 'APN用户': yData3[3].push(trade_data[i]['trade_sum']);	break;
-// 		        			default: break;
-// 		        		}
-// 		        	};
-// 		        	callback(myChart4, yData3);
-// 	        	}else{
-// 	        		alert("业务受理数据为空");
-// 	        	}
-// 	        },
-// 	        error : function (e)
-// 	        {
-// 	            alert("业务受理数据获取失败");
-// 	        }
-// 	    }
-//     );
-// }
-
 // 获取信控停机数据
 function getStopData(callback) {
     $.ajax(
 	    {
-            async : false,
-	        type : "get",
+	    	async : false,
+	        type : "post",
 	        url : server_url + "/index/stop_sum",
+	        data : {
+	        	"version" : trans_id
+	        },
 	        dataType : "json",
 	        success : function (data)
 	        {
+	        	console.log("信控停机数据 : ");
+	        	console.log(data);
 	        	if(data){
-	        		console.log(data);
 		        	stop_data = data;
 		        	for(var i = 0; i < stop_data.length; i++){
 		        		switch(stop_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData4[0].unshift(stop_data[i]['sum_num']); break;
-		        			case '宽固用户':    yData4[1].unshift(stop_data[i]['sum_num']);	break;
-		        			case '移网OCS用户':  yData4[2].unshift(stop_data[i]['sum_num']); break;
-		        			case 'APN用户': yData4[3].unshift(stop_data[i]['sum_num']);	break;
+		        			case '移网GSM用户': yData4[0].push(stop_data[i]['sum_num']); break;
+		        			case '宽固用户':    yData4[1].push(stop_data[i]['sum_num']);	break;
+		        			case '移网OCS用户':  yData4[2].push(stop_data[i]['sum_num']); break;
+		        			case 'APN用户': yData4[3].push(stop_data[i]['sum_num']);	break;
 		        			default: return;
 		        		}
 		        	};	
@@ -387,10 +404,10 @@ function orderLegend(name) {
 	            '{c|} {b|' + name + '}'
 	        ].join('\n');
 	} else if (name == '业务成功') {
-        return ['{a|' + trade_data['trade_success'] + '}',
-            '{c|} {b|' + name + '}'
-        ].join('\n');
-    }
+    	return ['{a|' + trade_data['trade_success'] + '}',
+	            '{c|} {b|' + name + '}'
+	        ].join('\n');
+	}
 }
 
 function updateOrderChart(chartName, data) {
@@ -408,15 +425,16 @@ function updateOrderChart(chartName, data) {
     chartName.setOption(
     {
 	    tooltip: {
-	        trigger: 'none',
-	        position: ['15%', '37%'],
-	        showContent: true,
-	        alwaysShowContent: true
+	        trigger: 'none'
 	    },
 	    legend: [
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'执行失败': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -442,22 +460,18 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/执行失败.png'
+				                image: '../static/image/fail.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + orderInfo['order_fail'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -483,22 +497,18 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/等待执行.png'
+				                image: '../static/image/wait.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + orderInfo['order_wait'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -524,22 +534,18 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/正在执行.png'
+				                image: '../static/image/exec.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + orderInfo['order_exec'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -565,23 +571,18 @@ function updateOrderChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/已经执行.png'
+				                image: '../static/image/success.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + orderInfo['order_success'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">{a}HLR指令</div></div>'
-	            }
 		    }
 	    ],
 	    series: [
 	        {
-	            name:'执行失败',
+	            name:'指令执行1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -596,11 +597,14 @@ function updateOrderChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'执行失败',
+		                name:'执行失败1',
 	                	value: orderInfo['order_fail'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#C6CDD7'
+	                			color: {
+	                				image: document.getElementById("grey"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -612,7 +616,7 @@ function updateOrderChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'指令执行1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -626,11 +630,14 @@ function updateOrderChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'等待执行',
+		                name:'等待执行1',
 	                	value: orderInfo['order_wait'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FDBA44'
+	                			color: {
+	                				image: document.getElementById("yellow"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -642,7 +649,7 @@ function updateOrderChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'指令执行1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -656,11 +663,14 @@ function updateOrderChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'正在执行',
+		                name:'正在执行1',
 	                	value: orderInfo['order_exec'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FB4C72'
+	                			color: {
+	                				image: document.getElementById("red"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -672,7 +682,7 @@ function updateOrderChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'指令执行1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -686,11 +696,14 @@ function updateOrderChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'已经执行',
+		                name:'已经执行1',
 	                	value: orderInfo['order_success'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#28E5E6'
+	                			color: {
+	                				image: document.getElementById("blue"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -701,47 +714,62 @@ function updateOrderChart(chartName, data) {
 		            }
 	            ]
 	        },
-	        // {
-	        //     name:'指令执行',
-	        //     type:'pie',
-	        //     hoverAnimation:false,
-	        //     silence: true,
-	        //     radius: ['96%', '100%'],
-	        //     center: ['25%', '55%'],
-	        //     avoidLabelOverlap: false,
-	        //     label: {
-	        //         normal: {
-	        //             show: false
-	        //         }
-	        //     },
-	        //     data:[
-	        //         {
-		       //          name:'执行失败',
-	        //         	value: orderInfo['order_success'],
-		       //      },
-	        //         {
-		       //          name:'等待执行',
-	        //         	value: orderInfo['order_success'],
-		       //      },
-	        //         {
-		       //          name:'正在执行',
-	        //         	value: orderInfo['order_success'],
-		       //      },
-	        //         {
-		       //          name:'已经执行',
-	        //         	value: orderInfo['order_success'],
-		       //      },
-	        //     ]
-	        // }
+	        {
+	            name: '指令执行',
+	            type: 'pie',
+	            hoverAnimation: false,
+	            silence: true,
+	            radius: ['0%', '0%'],
+	            center: ['25%', '50%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    position: 'center',
+	                    formatter: '{c|{c}}\n  {b|{b}HLR指令}  ',
+	                    backgroundColor: '#494553',
+	                    rich: {
+	                        b: {
+	                        	color: '#C6CDD7',
+	                            fontSize: 16,
+	                            lineHeight: 33
+	                        },
+	                        c: {
+	                            color: '#F0F0F0',
+	                        	fontSize: 36,
+	                        	lineHeight: 50,
+	                        }
+	                    }
+	                }
+	            },
+	            labelLine: {
+	                show: false
+	            },
+	            data:[
+	                {
+		                name:'执行失败',
+	                	value: orderInfo['order_fail'],
+		            },
+	                {
+		                name:'等待执行',
+	                	value: orderInfo['order_wait'],
+		            },
+	                {
+		                name:'正在执行',
+	                	value: orderInfo['order_exec'],
+		            },
+	                {
+		                name:'已经执行',
+	                	value: orderInfo['order_success'],
+		            },
+	            ]
+	        }
 	    ]
     }
     );
-    // chartName.hideLoading();
 }
 
 function updateTradeChart(chartName, data) {
 	var tradeInfo = data;
-	console.log(tradeInfo);
 
 	var margin = {
 		normal: {
@@ -755,15 +783,16 @@ function updateTradeChart(chartName, data) {
     chartName.setOption(
     {
 	    tooltip: {
-	        trigger: 'none',
-	        position: ['15%', '37%'],
-	        showContent: true,
-	        alwaysShowContent: true
+	        trigger: 'none'
 	    },
 	    legend: [
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务失败': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -789,22 +818,21 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/执行失败.png'
+				                image: '../static/image/fail.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_fail'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">&nbsp;&nbsp;&nbsp;&nbsp;{a}</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务等待': false
+		    	},
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '25%',
 		        data:[
 		        	{
@@ -830,22 +858,21 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/等待执行.png'
+				                image: '../static/image/wait.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_wait'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">&nbsp;&nbsp;&nbsp;&nbsp;{a}</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务执行': false
+		    	},
 		        orient: 'vertical',
-		        right: '25%',
+		        right: '30%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -871,22 +898,21 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/正在执行.png'
+				                image: '../static/image/exec.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_exec'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">&nbsp;&nbsp;&nbsp;&nbsp;{a}</div></div>'
-	            }
 		    },
 		    {
+		    	selectedMode: 'single',
+		    	selected: {
+		    		'业务成功': false
+		    	},
 		        orient: 'vertical',
-		        right: '5%',
+		        right: '10%',
 		        top: '55%',
 		        data:[
 		        	{
@@ -912,23 +938,18 @@ function updateTradeChart(chartName, data) {
 	                    },
 	                    c: {
 	                    	backgroundColor: {
-				                image: '../static/image/已经执行.png'
+				                image: '../static/image/success.png'
 				            },
 				            width: 26,
 				            height: 4
 	                    }
 	                }
 	            },
-	            tooltip: {
-		            show: true,
-		            formatter: '<div style="background-color: #494553;"><div style="text-align: center; font-size: 36px; line-height: 50px; color: #F0F0F0";>' + tradeInfo['trade_success'] +
-		            	'</div><div style="font-size: 16px; line-height: 22px; color: #C6CDD7">&nbsp;&nbsp;&nbsp;&nbsp;{a}</div></div>'
-	            }
 		    }
 	    ],
 	    series: [
 	        {
-	            name:'业务失败',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -943,11 +964,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务失败',
+		                name:'业务失败1',
 	                	value: tradeInfo['trade_fail'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#C6CDD7'
+	                			color: {
+	                				image: document.getElementById("grey"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -959,7 +983,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -973,11 +997,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务等待',
+		                name:'业务等待1',
 	                	value: tradeInfo['trade_wait'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FDBA44'
+	                			color: {
+	                				image: document.getElementById("yellow"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -989,7 +1016,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1003,11 +1030,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务执行',
+		                name:'业务执行1',
 	                	value: tradeInfo['trade_exec'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#FB4C72'
+	                			color: {
+	                				image: document.getElementById("red"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1019,7 +1049,7 @@ function updateTradeChart(chartName, data) {
 	            ]
 	        },
 	        {
-	            name:'指令执行',
+	            name:'业务受理1',
 	            type:'pie',
 	            hoverAnimation:false,
 	            silence: true,
@@ -1033,11 +1063,14 @@ function updateTradeChart(chartName, data) {
 	            },
 	            data:[
 	                {
-		                name:'业务成功',
+		                name:'业务成功1',
 	                	value: tradeInfo['trade_success'],
 	                	itemStyle: {
 	                		normal: {
-	                			color: '#28E5E6'
+	                			color: {
+	                				image: document.getElementById("blue"),
+	                				repeat: 'no-repeat'
+	                			}
 	                		},
 	                	}
 		            },
@@ -1048,10 +1081,58 @@ function updateTradeChart(chartName, data) {
 		            }
 	            ]
 	        },
+	        {
+	            name:'业务受理',
+	            type:'pie',
+	            hoverAnimation:false,
+	            silence: true,
+	            radius: ['0%', '0%'],
+	            center: ['25%', '50%'],
+	            avoidLabelOverlap: false,
+	            label: {
+	                normal: {
+	                    position: 'center',
+	                    formatter: '{c|{c}}\n    {b|{b}}  ',
+	                    backgroundColor: '#494553',
+	                    rich: {
+	                        b: {
+	                        	color: '#C6CDD7',
+	                            fontSize: 16,
+	                            lineHeight: 33
+	                        },
+	                        c: {
+	                            color: '#F0F0F0',
+	                        	fontSize: 36,
+	                        	lineHeight: 50,
+	                        }
+	                    }
+	                }
+	            },
+	            labelLine: {
+	            	show: false
+	            },
+	            data:[
+	                {
+		                name:'业务失败',
+	                	value: tradeInfo['trade_fail'],
+		            },
+	                {
+		                name:'业务等待',
+	                	value: tradeInfo['trade_wait'],
+		            },
+	                {
+		                name:'业务执行',
+	                	value: tradeInfo['trade_exec'],
+		            },
+	                {
+		                name:'业务成功',
+	                	value: tradeInfo['trade_success'],
+		            },
+	            ]
+	        }
 	    ]
     }
     );
-    // chartName.hideLoading();
 }
 
 function drawPolyline(myChart2, yData) {
@@ -1066,6 +1147,9 @@ function drawPolyline(myChart2, yData) {
 	option = {
 		tooltip: {
 		    trigger: 'axis',
+		    axisPointer:{
+		    	type:'cross',
+		    },
 		    formatter: function(params){
 		    	var time = params[0].name;
 				var res = '<div><p>时间：'+ time +'</p></div>';
@@ -1112,28 +1196,28 @@ function drawPolyline(myChart2, yData) {
 		            },
 		            c: {
 		            	backgroundColor: {
-			                image: '../static/image/移网GSM用户.png'
+			                image: '../static/image/gsm.png'
 			            },
 			            width: 26,
 			            height: 4
 		            },
 		             d: {
 		            	backgroundColor: {
-			                image: '../static/image/宽固用户.png'
+			                image: '../static/image/adsl.png'
 			            },
 			            width: 26,
 			            height: 4
 		            },
 		            e: {
 		            	backgroundColor: {
-			                image: '../static/image/移网OCS用户.png'
+			                image: '../static/image/ocs.png'
 			            },
 			            width: 26,
 			            height: 4
 		            }, 
 		             f: {
 		            	backgroundColor: {
-			                image: '../static/image/APN用户.png'
+			                image: '../static/image/apn.png'
 			            },
 			            width: 26,
 			            height: 4
@@ -1181,23 +1265,39 @@ function drawPolyline(myChart2, yData) {
 		    {
 		        name:'移网GSM用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[0],
-		       itemStyle : {
-		        normal : {
-		            lineStyle:{
-		                width:2,//折线宽度
-		                color:"#28E5E6"//折线颜色
-		            }
-		        }
-		    },	         
+			    itemStyle : {
+			        normal : {
+			            lineStyle:{
+			                width:2,//折线宽度
+			                color:"#28E5E6"//折线颜色
+			            }
+			        }
+			    },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#28E5E6' // 0% 处的颜色
+
+		                    }, {
+		                        offset: 1, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },		            		
+	            	}
+	            },		    	         
 		    },
 		    {
 		        name:'宽固用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[1],
@@ -1208,12 +1308,29 @@ function drawPolyline(myChart2, yData) {
 		                    color:"#FB4C72"//折线颜色
 		                }
 		            }
-		        },	         
+		        },	
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#FB4C72' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },
+		              	// opacity:0.3	            		
+	            	}
+	            },		                 
 		    },
 		    {
 		        name:'移网OCS用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',
 		        data:yData[2],
@@ -1224,12 +1341,30 @@ function drawPolyline(myChart2, yData) {
 		                    color:"#FDBA44"//折线颜色
 		                }
 		            }
-		        },	                  
+		        },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2:0,
+		                    y2:1,
+		                    colorStops: [{
+		                        offset: 0, color: '#FDBA44' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }, 
+		                    ],
+		                    globalCoord: false // 缺省为 false
+		                },
+	            	},
+	                opacity:0.3
+	            },			        	                  
 		    },
 		    {
 		        name:'APN用户',
 		        type:'line',
-		        stack: '总量',
 		        smooth:true,
 		        symbol:'none',            
 		        data:yData[3],
@@ -1241,11 +1376,27 @@ function drawPolyline(myChart2, yData) {
 		                }
 		            }
 		        },
+	            areaStyle: {
+	            	normal:{
+		                color: {
+		                    type: 'linear',
+		                    x: 0,
+		                    y: 0,
+		                    x2: 0,
+		                    y2: 1,
+		                    colorStops: [{
+		                        offset: 0, color: '#DC32FB' // 0% 处的颜色
+		                    }, {
+		                        offset: 0.5, color: '#494553' // 100% 处的颜色
+		                    }],
+		                    globalCoord: false // 缺省为 false
+		                },
+	            	}
+	            },			        
 		    },
 		]
 	};
 	myChart2.setOption(option);
-	// myChart2.hideLoading();
 }
 
 //点击事件交互（由于隐藏标签获取不了DIV的大小，导致画图区域不正确，交互触发设置画图区域大小）
@@ -1261,7 +1412,7 @@ function paylog(){
 		    chart2div.style.width=width+'px';
 		    chart2div.style.height=height+'px';
 		    myChart2.resize();
-		    return;
+		    return;			
 		}
 	}
 	alert("实时话费数据为空！！");
@@ -1284,25 +1435,7 @@ function payRecord(){
 	alert("缴费记录数据为空!!!");
 }
 
-//点击业务受理
-function doBusiness(){
-	for(var i = 0 ; i < yData3.length; i++){
-		if(yData3[i].length > 0){
-			drawPolyline(myChart4,yData3);
-		    var chart2div=document.getElementById('part7');
-		    var tabcontent = document.getElementById('pills-tabContent1');
-		    var width=tabcontent.offsetWidth ;
-		    var height=tabcontent.offsetHeight;
-		    chart2div.style.width=width+'px';
-		    chart2div.style.height=height+'px';
-		    myChart4.resize();
-		    return;			
-		}
-	}
-	alert("业务受理数据为空!!!");
-}
-
-function creditStop(){
+function creditStop() {
 	for(var i = 0; i < yData4.length; i++){
 		if(yData4[i].length > 0){
 			drawPolyline(myChart5,yData4);
@@ -1313,17 +1446,8 @@ function creditStop(){
 		    chart2div.style.width=width+'px';
 		    chart2div.style.height=height+'px';
 		    myChart5.resize();
-		    return;			
+		    return;
 		}
 	}
 	alert("信控停机数据为空！！");
-}
-
-function isInArray(arr, value){
-    for(var i = 0; i < arr.length; i++){
-        if(arr[i] === value){
-            return true;
-        }
-    }
-    return false;
 }

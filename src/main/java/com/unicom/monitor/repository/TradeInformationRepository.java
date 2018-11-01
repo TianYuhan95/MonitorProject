@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TradeInformationRepository extends JpaRepository<TradeInformation,Long> {
-    @Query("select t from TradeInformation t where version_control = :version and rownum<=96 order by t.record_time desc ")
-    List<TradeInformation> findByAll(@Param("version") String version);
+    @Query("select t from TradeInformation t where version_control = :version  order by t.record_time desc ")
+    TradeInformation findByAll(@Param("version") String version);
 }

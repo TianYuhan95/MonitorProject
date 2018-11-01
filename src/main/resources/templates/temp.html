@@ -1,119 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>MonitorProject</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta http-equiv="refresh" content="300">
-    <script src="../static/js/jquery-3.3.1.min.js"></script>
-    <script src="../static/js/echarts.min.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
-    <script src="../static/js/monitor.js"></script>
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/css/monitor.css">
+  <title>MonitorProject</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="refresh" content="300">
+  <script src="../static/js/jquery-3.3.1.min.js"></script>
+  <script src="../static/js/echarts.min.js"></script>
+  <script src="../static/js/bootstrap.min.js"></script>
+  <script src="../static/js/monitor.js"></script>
+  <link rel="stylesheet" href="../static/css/bootstrap.css">
+  <link rel="stylesheet" href="../static/css/monitor.css">
 </head>
-<body style="background-color: #373845; color: #C6CDD7;" ng-app="myApp" ng-controller="myCtrl">
+<body style="background-color: #373845; color: #C6CDD7;">
 
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height: 85px; background-color: #494553">
-      <a class="navbar-brand" href="#" th:text="${allInformation.trans_name}+'割接监控系统'" style="font-family: PingFangSC-Medium; font-size: 28px; line-height: 40px; color: #C6CDD7">XXX割接监控系统</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" ariInfoa-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-        <div class="monitor-dropdown dropdown">
-		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #494553; border-color: #494553; color: #C6CDD7; font-size: 24px; line-height: 33px">
-		    Dropdown button
-		  </button>
-		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		    <a class="dropdown-item" href="#">Action</a>
-		    <a class="dropdown-item" href="#">Another action</a>
-		    <a class="dropdown-item" href="#">Something else here</a>
-		  </div>
-		</div>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="height: 85px; background-color: #494553">
+    <div class="monitor-dropdown dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${allInformation.trans_name} + '割接监控系统'">Dropdown button</button>
+      <div class="monitor-dropdown-menu dropdown-menu" aria-labelledby="dropdownMenuButton">
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main style="max-width: 1920px" role="main" class="container">
+  <img id="red" style="display: none;" src="../static/image/red.png">
+  <img id="yellow" style="display: none;" src="../static/image/yellow.png">
+  <img id="grey" style="display: none;" src="../static/image/grey.png">
+  <img id="blue" style="display: none;" src="../static/image/blue.png">
+  <p id="trans_date" style="display: none;" th:text="${allInformation.trans_date}"></p>
+  <p id="trans_name" style="display: none;" th:text="${allInformation.trans_name}"></p>
+  <p id="version" style="display: none;" th:text="${allInformation.version_control}"></p>
 
-      <div style="padding-top: 101px" class="album bg-black">
-        <div class="container-fluid">
+  <main style="max-width: 1920px" role="main" class="container">
 
-          <div class="row">
-            <div class="col-md-3">
-              <div style="background-color: #494553" class="card box-shadow text-center">
-                <div class="all-info-card card-body" style="height: 150px">
-                  <p class="card-title">割接用户总量</p>
-                  <h5 class="card-text" id="trans_all_num" style="color: #FFD010; font-family: Helvetica" th:text="${allInformation.trans_all_num}"></h5>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-9">
-              <div style="background-color: #494553" class="card box-shadow">
-                <div class="card-body" style="padding-left: 100px">
-					<ul class="nav nav-pills nav-fill">
-						<li class="all-info-card nav-item text-left" style="height: 110px">
-							<p class="card-title">移网GSM用户</p >
-							<h5 class="card-text" id="trans_gsm_num" th:text="${allInformation.trans_gsm_num}"></h5>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" th:attr="aria-valuenow=${allInformation.trans_gsm_num}" aria-valuemin="0" aria-valuemax="${allInformation.trans_gsm_num}"></div>
-							</div>
-						</li>
-						<li class="all-info-card nav-item text-left" style="height: 110px">
-							<p class="card-title">宽固用户</p >
-							<h5 class="card-text" id="trans_adsl_num" th:text="${allInformation.trans_adsl_num}"></h5>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" th:attr="aria-valuenow=${allInformation.trans_adsl_num}" aria-valuemin="0" aria-valuemax="${allInformation.trans_adsl_num}"></div>
-							</div>
-						</li>
-						<li class="all-info-card nav-item text-left" style="height: 110px">
-							<p class="card-title">移网OCS用户</p >
-							<h5 class="card-text" id="trans_ocs_num" th:text="${allInformation.trans_ocs_num}"></h5>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" th:attr="aria-valuenow=${allInformation.trans_ocs_num}" aria-valuemin="0" aria-valuemax="${allInformation.trans_ocs_num}"></div>
-							</div>
-						</li>
-						<li class="all-info-card nav-item text-left" style="height: 110px">
-							<p class="card-title">APN用户</p >
-							<h5 class="card-text" id="trans_apn_num" th:text="${allInformation.trans_apn_num}"></h5>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" th:attr="aria-valuenow=${allInformation.trans_apn_num}" aria-valuemin="0" aria-valuemax="${allInformation.trans_apn_num}"></div>
-							</div>
-						</li>
-					</ul>
-                </div>
+    <div style="padding-top: 101px" class="album bg-black">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-3">
+            <div style="background-color: #494553" class="card box-shadow text-center">
+              <div class="all-info-card card-body" style="height: 150px">
+                <p class="card-title">割接用户总量</p>
+                <h5 class="card-text" id="trans_all_num" style="color: #FFD010; font-family: Helvetica" th:text="${allInformation.trans_all_num}"></h5>
               </div>
             </div>
           </div>
+          <div class="col-md-9">
+            <div style="background-color: #494553" class="card box-shadow">
+              <div class="card-body" style="padding-left: 100px">
+                <ul class="nav nav-pills nav-fill">
+                  <li class="all-info-card nav-item text-left" style="height: 110px">
+                    <p class="card-title">移网GSM用户</p>
+                    <h5 class="card-text" id="trans_gsm_num" th:text="${allInformation.trans_gsm_num}"></h5>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" th:attr="style='width: ' + ${allInformation.trans_gsm_num} / ${allInformation.trans_all_num} * 100 + '%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </li>
+                  <li class="all-info-card nav-item text-left" style="height: 110px">
+                    <p class="card-title">宽固用户</p>
+                    <h5 class="card-text" id="trans_adsl_num" th:text="${allInformation.trans_adsl_num}"></h5>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" th:attr="style='width: ' + ${allInformation.trans_adsl_num} / ${allInformation.trans_all_num} * 100 + '%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </li>
+                  <li class="all-info-card nav-item text-left" style="height: 110px">
+                    <p class="card-title">移网OCS用户</p>
+                    <h5 class="card-text" id="trans_ocs_num" th:text="${allInformation.trans_ocs_num}"></h5>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" th:attr="style='width: ' + ${allInformation.trans_ocs_num} / ${allInformation.trans_all_num} * 100 + '%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </li>
+                  <li class="all-info-card nav-item text-left" style="height: 110px">
+                    <p class="card-title">APN用户</p>
+                    <h5 class="card-text" id="trans_apn_num" th:text="${allInformation.trans_apn_num}"></h5>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" th:attr="style='width: ' + ${allInformation.trans_apn_num} / ${allInformation.trans_all_num} * 100 + '%'" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div class="row">
-            <div class="col-md-5">
-              <div style="background-color: #494553" class="card box-shadow">
-                <div class="card-body" style="height: 400px">
+        <div class="row">
+          <div class="col-md-5">
+            <div style="background-color: #494553" class="card box-shadow">
+              <div class="card-body" style="height: 400px">
 
-                  <ul class="monitor-dashboard-pills nav nav-pills mb-3" role="tablist">
-					  <li class="nav-item">
-					    <a class="nav-link active" id="pills-order-tab" data-toggle="pill" href="#pills-order" role="tab" aria-controls="pills-order" aria-selected="true">HLR指令执行</a>
-					  </li>
-					  <li class="nav-dot-divider nav-item">
-						<a class="nav-link" role="tab">&#8226</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" id="pills-trade-tab" data-toggle="pill" href="#pills-trade" role="tab" aria-controls="pills-trade" aria-selected="false">业务受理</a>
-					  </li>
-				  </ul>
-				  <div class="tab-content" id="pills-tabContent">
-					<div class="tab-pane fade show active" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
-		              <div id="order" style="width: 100%; height: 240px"></div>
-					</div>
-					<div class="tab-pane fade" id="pills-trade" role="tabpanel" aria-labelledby="pills-trade-tab">
-		              <div id="trade" style="width: 100%; height: 240px"></div>
-					</div>
-				  </div>
+                <ul class="monitor-dashboard-pills nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-order-tab" data-toggle="pill" href="#pills-order" role="tab" aria-controls="pills-order" aria-selected="true">HLR指令执行</a>
+                  </li>
+                  <li class="nav-dot-divider nav-item">
+                  <a class="nav-link" role="tab">&#8226</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-trade-tab" data-toggle="pill" href="#pills-trade" role="tab" aria-controls="pills-trade" aria-selected="false">业务受理</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent" style="margin-top: 35px">
+                  <div class="tab-pane fade show active" id="pills-order" role="tabpanel" aria-labelledby="pills-order-tab">
+                    <div id="order" style="width: 100%; height: 240px"></div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-trade" role="tabpanel" aria-labelledby="pills-trade-tab">
+                    <div id="trade" style="width: 100%; height: 240px"></div>
+                  </div>
                 </div>
               </div>
             </div>
+<<<<<<< HEAD
             <div class="col-md-7">
               <div style="background-color: #494553" class="card box-shadow">
                 <div class="card-body" style="height: 400px">
@@ -148,87 +142,132 @@
 						<div style="width: 100%; height:330px "  id="part8"></div>
 					</div>										
 				  </div>
+=======
+          </div>
+          <div class="col-md-7">
+            <div style="background-color: #494553" class="card box-shadow">
+              <div class="card-body" style="height: 400px">
+                <ul class="monitor-nav-pills nav nav-pills mb-3 justify-content-end" id="pills-tab" role="tablist" style="height: 30px">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab1" data-toggle="pill" href="#pills-home1" role="tab" aria-controls="pills-home1" aria-selected="true"
+                    onclick="javascript:paylog()">实时话费</a>
+                  </li>
+                  <li class="nav-dot-divider nav-item">
+                    <a class="nav-link" role="tab">&#8226</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab2" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile2" aria-selected="false"
+                    onclick="javascript:payRecord()">缴费记录</a>
+                  </li>
+                  <li class="nav-dot-divider nav-item">
+                    <a class="nav-link" role="tab">&#8226</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab4" data-toggle="pill" href="#pills-profile4" role="tab" aria-controls="pills-profile4" aria-selected="false"
+                    onclick="javascript:creditStop()">信控停机</a>
+                  </li>                    
+                </ul>
+                <div class="tab-content" id="pills-tabContent1">
+                  <div class="tab-pane fade show active" id="pills-home1" role="tabpanel" aria-labelledby="pills-home-tab1">
+                    <div style="width: 100%; height:330px" id="part5"></div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-profile2" role="tabpanel" aria-labelledby="pills-profile-tab2">
+                    <div style="width: 100%; height:305px" id="part6"></div>
+                  </div>
+                  <div class="tab-pane fade" id="pills-profile4" role="tabpanel" aria-labelledby="pills-profile-tab4">
+                    <div style="width: 100%; height:305px" id="part8"></div>
+                  </div>
+>>>>>>> 9c57e2566a06824d3787ac90d383a55f02dfaef5
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div style="background-color: #494553" class="card box-shadow">
-              	<div class="card-body">
-	        		<ul class="monitor-table-ul nav nav-pills nav-fill">
-					  <li class="nav-item text-left" style="width: 642px">
-		                  <p class="monitor-table-title card-text">实时监控统计</p>
-		                  <div>
-			                  <table id="monitor-real-info" class="table table-striped text-nowrap">
-								  <thead>
-								    <tr>
-								      <th scope="col">网别</th>
-								      <th scope="col">实时话费</th>
-								      <th scope="col">缴费记录</th>
-								      <th scope="col">信控停机</th>
-								    </tr>
-								  </thead>
-								  <tbody></tbody>
-							  </table>
-		                  </div>
-					  </li>
-					  <li class="nav-item text-left" style="width: 562px">
-		                  <p class="monitor-table-title card-text">话费最高用户</p>
-		                  <div class="pre-scrollable">
-			                  <table class="table table-striped text-nowrap scrolltable">
-								  <thead>
-								    <tr>
-								      <th scope="col">号码</th>
-								      <th scope="col">话费</th>
-								      <th scope="col">上月费用</th>
-								      <th scope="col">网别</th>
-								    </tr>
-								  </thead>
-								  <tbody>
-								    <tr th:each="userDetail : ${userDetail_byFee}">
-								      <td th:attr="title=${userDetail.serial_number}" th:text="${userDetail.serial_number}"></td>
-								      <td th:attr="title=${userDetail.leave_real_fee}" th:text="${userDetail.leave_real_fee}"></td>
-								      <td th:attr="title=${userDetail.lastmonth_fee}" th:text="${userDetail.lastmonth_fee}"></td>
-								      <td th:attr="title=${userDetail.net_type_code}" th:text="${userDetail.net_type_code}"></td>
-								    </tr>
-								  </tbody>
-							  </table>
-		                  </div>
-					  </li>
-					  <li class="nav-item text-left" style="width: 498px">
-		                  <p class="monitor-table-title card-text">停机用户</p>
-		                  <div class="pre-scrollable">
-			                  <table class="table table-striped text-nowrap">
-								  <thead>
-								    <tr>
-								      <th scope="col">号码</th>
-								      <th scope="col">话费</th>
-								      <th scope="col">停机时间</th>
-								      <th scope="col">网别</th>
-								    </tr>
-								  </thead>
-								  <tbody>
-								    <tr th:each="userDetail : ${userDetail_byStop}">
-								      <td th:attr="title=${userDetail.serial_number}" th:text="${userDetail.serial_number}"></td>
-								      <td th:attr="title=${userDetail.leave_real_fee}" th:text="${userDetail.leave_real_fee}"></td>
-								      <td th:attr="title=${userDetail.stop_time}" th:text="${userDetail.stop_time}"></td>
-								      <td th:attr="title=${userDetail.net_type_code}" th:text="${userDetail.net_type_code}"></td>
-								    </tr>
-								  </tbody>
-							  </table>
-		                  </div>
-					  </li>
-					</ul>
-              	</div>
+        <div class="row">
+          <div class="col-md-12">
+            <div style="background-color: #494553" class="card box-shadow">
+              <div class="card-body">
+                <ul class="monitor-table-ul nav nav-pills nav-fill">
+                  <li class="nav-item text-left" style="width: 642px">
+                    <p class="monitor-table-title card-text">实时监控统计</p>
+                    <div>
+                      <table id="monitor-real-info" class="table table-striped text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col">网别</th>
+                            <th scope="col">实时话费(元)</th>
+                            <th scope="col">缴费记录</th>
+                            <th scope="col">信控停机</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                  </li>
+                  <li class="nav-item text-left" style="width: 562px">
+                    <p class="monitor-table-title card-text">话费最高用户</p>
+                    <div>
+                      <table class="fixed-thead table table-striped text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col">号码</th>
+                            <th scope="col">话费(元)</th>
+                            <th scope="col">上月费用(元)</th>
+                            <th scope="col">网别</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <div class="pre-scrollable">
+                      <table class="table table-striped text-nowrap">
+                        <tbody>
+                          <tr th:each="userDetail : ${userDetail_byFee}">
+                            <td th:attr="title=${userDetail.serial_number}" th:text="${userDetail.serial_number}"></td>
+                            <td th:attr="title=${userDetail.leave_real_fee}" th:text="${userDetail.leave_real_fee}"></td>
+                            <td th:attr="title=${userDetail.lastmonth_fee}" th:text="${userDetail.lastmonth_fee}"></td>
+                            <td th:attr="title=${userDetail.net_type_code}" th:text="${userDetail.net_type_code}"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                  <li class="nav-item text-left" style="width: 498px">
+                    <p class="monitor-table-title card-text">停机用户</p>
+                    <div>
+                      <table class="fixed-thead table table-striped text-nowrap">
+                        <thead>
+                          <tr>
+                            <th scope="col">号码</th>
+                            <th scope="col">话费(元)</th>
+                            <th scope="col">停机时间</th>
+                            <th scope="col">网别</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <div class="pre-scrollable">
+                      <table class="table table-striped text-nowrap">
+                        <tbody>
+                          <tr th:each="userDetail : ${userDetail_byStop}">
+                            <td th:attr="title=${userDetail.serial_number}" th:text="${userDetail.serial_number}"></td>
+                            <td th:attr="title=${userDetail.leave_real_fee}" th:text="${userDetail.leave_real_fee}"></td>
+                            <td th:attr="title=${userDetail.stop_time}" th:text="${userDetail.stop_time}"></td>
+                            <td th:attr="title=${userDetail.net_type_code}" th:text="${userDetail.net_type_code}"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-          
         </div>
+        
       </div>
-    </main>
+    </div>
+  </main>
 
 </body>
 </html>
