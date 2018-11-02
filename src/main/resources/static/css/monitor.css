@@ -18,7 +18,16 @@
 	background-color: #373242;
 }
 
+.monitor-dropdown.show > button:hover {
+	background-color: #373242;
+}
+
 .monitor-dropdown > button:focus {
+	background-color: #373242;
+	box-shadow: 0 0 0 1px #5F6379;
+}
+
+.monitor-dropdown.show > button:focus {
 	background-color: #373242;
 	box-shadow: 0 0 0 1px #5F6379;
 }
@@ -41,6 +50,16 @@
 .monitor-dropdown-menu > form > input:hover {
 	background-color: #413C4E;
 	color: #C6CDD7;
+}
+
+.dropdown-item {
+	color: #C6CDD7;
+	font-size: 28px;
+	line-height: 40px;
+	background-color: #413C4E;
+	color: #C6CDD7;
+	padding-left: 18px;
+	padding-right: 18px;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
