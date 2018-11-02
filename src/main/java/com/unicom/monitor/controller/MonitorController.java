@@ -1,5 +1,6 @@
 package com.unicom.monitor.controller;
 
+import com.unicom.monitor.configuration.NetConfigInfo;
 import com.unicom.monitor.entity.*;
 import com.unicom.monitor.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,18 @@ public class MonitorController {
     public static List<Paylog> list_payLog = null;
     public static List<StopSum> list_stopSum = null;
     public static TradeInformation list_tradeInformation = null;
+    @Autowired
+    public NetConfigInfo netConfigInfo;
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String Index(Model model){
-        String host_ip = null;
+        System.out.println("http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
         try{
-
+            model.addAttribute("server_ip","http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
             model.addAttribute("allInformation",monitorService.AllInformation_findByAll().get(0));
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee());
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop());
-            
+
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Index Controller Had Exception");
@@ -47,12 +50,14 @@ public class MonitorController {
 
     @RequestMapping(value = "/index",method = RequestMethod.POST)
     public String Index(Model model, @RequestParam(value = "version") String version){
+        NetConfigInfo netConfigInfo = new NetConfigInfo();
         System.out.println(version);
+        System.out.println("http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
         try{
+            model.addAttribute("server_ip","http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
             model.addAttribute("allInformation",monitorService.AllInformation_findByAll(version));
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee(version));
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop(version));
-
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Index Controller Had Exception");
