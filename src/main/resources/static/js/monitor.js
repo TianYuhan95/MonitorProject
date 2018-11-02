@@ -7,9 +7,7 @@ window.onload = function () {
 
 // 获取所有迁转信息与当前迁转标识
 function firstAJAX(callback) {
-	server_ip = $("#server_ip").text();
-	server_port = $("#server_port").text();
-	server_url = 'http://' + server_ip + ':' + server_port;
+	server_url = $("#server_url").text();
     $.ajax(
 	    {
 	    	async : false,
@@ -47,8 +45,6 @@ function firstUpdate() {
 	}
 }
 
-var server_ip;
-var server_port;
 var server_url = 'http://localhost:8080';
 var trans_id;
 
