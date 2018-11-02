@@ -28,7 +28,7 @@ public class MonitorController {
     public String Index(Model model){
         System.out.println("http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
         try{
-            model.addAttribute("server_ip","http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
+            model.addAttribute("server_url", "http://" + netConfigInfo.getIp() + ":" + netConfigInfo.getPort());
             model.addAttribute("allInformation",monitorService.AllInformation_findByAll().get(0));
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee());
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop());
