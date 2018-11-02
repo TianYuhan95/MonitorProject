@@ -44,7 +44,9 @@ function firstUpdate() {
 	}
 }
 
-var server_url = 'http://localhost:8080';
+//var server_url = 'http://10.0.84.47:8080';
+var server_url = 'http://10.0.83.11:8080';
+//var server_url = 'http://localhost:8080';
 var trans_id;
 
 var orderChart;
@@ -100,14 +102,14 @@ function updateHTML() {
 	}
 
 	// 更新实时监控统计表
-	var latest_fee = [ fee_data[fee_data.length - 1], fee_data[fee_data.length - 2],
-						fee_data[fee_data.length - 3], fee_data[fee_data.length - 4] ];
-	var latest_paylog = [ paylog_data[paylog_data.length - 1], paylog_data[paylog_data.length - 2],
-						paylog_data[paylog_data.length - 3], paylog_data[paylog_data.length - 4] ];
-	var latest_stop = [ stop_data[stop_data.length - 1], stop_data[stop_data.length - 2],
-						stop_data[stop_data.length - 3], stop_data[stop_data.length - 4] ];
+	var latest_fee = [ fee_data[0], fee_data[1],
+						fee_data[2], fee_data[3] ];
+	var latest_paylog = [ paylog_data[0], paylog_data[1],
+						paylog_data[2], paylog_data[3] ];
+	var latest_stop = [ stop_data[0], stop_data[1],
+						stop_data[2], stop_data[3] ];
 
-	var net_type = [ "移网GSM用户", "宽固用户", "移网OCS用户", "APN用户" ];
+	var net_type = [ "移网OCS用户", "移网GSM用户", "宽固用户", "APN用户" ];
 	var latest_info = {};
 
 	for (var i = 0; i < net_type.length; i++) {
@@ -252,17 +254,17 @@ function getFeeData(callback) {
 		        	fee_data = data;
 		        	for(var i = 0; i < fee_data.length; i++){
 		        		//x轴数据
-		        		// var date1 = new Date(fee_data[i]['record_time']);
-		        		// var time = date1.getHours()+':'+ date1.getMinutes();
 		        		var date = fee_data[i]['record_time'];
 		        		var time = date.substring(11);
-		        		xData.push(time);
+		        		if(!isInArray(xData,time)){
+		        			xData.unshift(time);	
+		        		}
 		        		// y轴数据;
 		        		switch(fee_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData1[0].push(fee_data[i]['sum_fee']); break;
-		        			case '宽固用户':    yData1[1].push(fee_data[i]['sum_fee']);	break;
-		        			case '移网OCS用户':  yData1[2].push(fee_data[i]['sum_fee']); break;
-		        			case 'APN用户': yData1[3].push(fee_data[i]['sum_fee']);	break;
+		        			case '移网GSM用户': yData1[0].unshift(fee_data[i]['sum_fee']); break;
+		        			case '宽固用户':    yData1[1].unshift(fee_data[i]['sum_fee']);	break;
+		        			case '移网OCS用户':  yData1[2].unshift(fee_data[i]['sum_fee']); break;
+		        			case 'APN用户': yData1[3].unshift(fee_data[i]['sum_fee']);	break;
 		        			default: break;
 		        		}
 		        	}
@@ -298,10 +300,10 @@ function getPaylogData(callback) {
 		        	paylog_data = data;
 		        	for(var i = 0; i < paylog_data.length; i++){
 		        		switch(paylog_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData2[0].push(paylog_data[i]['sum_num']); break;
-		        			case '宽固用户':    yData2[1].push(paylog_data[i]['sum_num']);	break;
-		        			case '移网OCS用户':  yData2[2].push(paylog_data[i]['sum_num']); break;
-		        			case 'APN用户': yData2[3].push(paylog_data[i]['sum_num']);	break;
+		        			case '移网GSM用户': yData2[0].unshift(paylog_data[i]['sum_num']); break;
+		        			case '宽固用户':    yData2[1].unshift(paylog_data[i]['sum_num']);	break;
+		        			case '移网OCS用户':  yData2[2].unshift(paylog_data[i]['sum_num']); break;
+		        			case 'APN用户': yData2[3].unshift(paylog_data[i]['sum_num']);	break;
 		        			default: break;
 		        		}
 		        	};
@@ -338,10 +340,10 @@ function getStopData(callback) {
 		        	stop_data = data;
 		        	for(var i = 0; i < stop_data.length; i++){
 		        		switch(stop_data[i]['net_type_code']){
-		        			case '移网GSM用户': yData4[0].push(stop_data[i]['sum_num']); break;
-		        			case '宽固用户':    yData4[1].push(stop_data[i]['sum_num']);	break;
-		        			case '移网OCS用户':  yData4[2].push(stop_data[i]['sum_num']); break;
-		        			case 'APN用户': yData4[3].push(stop_data[i]['sum_num']);	break;
+		        			case '移网GSM用户': yData4[0].unshift(stop_data[i]['sum_num']); break;
+		        			case '宽固用户':    yData4[1].unshift(stop_data[i]['sum_num']);	break;
+		        			case '移网OCS用户':  yData4[2].unshift(stop_data[i]['sum_num']); break;
+		        			case 'APN用户': yData4[3].unshift(stop_data[i]['sum_num']);	break;
 		        			default: return;
 		        		}
 		        	};	
@@ -1450,4 +1452,14 @@ function creditStop() {
 		}
 	}
 	alert("信控停机数据为空！！");
+}
+
+function isInArray(arr, value){
+	if(arr == null || value == null)
+		return;
+	for(var i = 0; i < arr.length; i++){
+		if(arr[i] === value)
+			return true;
+	}
+	return false;
 }
