@@ -23,7 +23,9 @@ public class MonitorController {
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String Index(Model model){
+        String host_ip = null;
         try{
+
             model.addAttribute("allInformation",monitorService.AllInformation_findByAll().get(0));
             model.addAttribute("userDetail_byFee",monitorService.UserDetail_findByFee());
             model.addAttribute("userDetail_byStop",monitorService.UserDetail_findByStop());
