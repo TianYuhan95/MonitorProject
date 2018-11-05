@@ -12,8 +12,8 @@ import java.net.UnknownHostException;
 @Component
 public class NetConfigInfo implements ApplicationListener<WebServerInitializedEvent> {
 
-    private int port;
-    private String ip = null;
+    private static int port;
+    private static String ip = null;
 
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
