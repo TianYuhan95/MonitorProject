@@ -115,19 +115,31 @@ function updateHTML() {
 		var data_array = [];
 		for (var j = 0; j < latest_fee.length; j++) {
 			if (latest_fee[j]['net_type_code'] == net_type[i]) {
-				data_array.push(latest_fee[j]['sum_fee']);
+				if (latest_fee[j]['sum_fee'] == 0) {
+					data_array.push('0');
+				} else {
+					data_array.push(latest_fee[j]['sum_fee']);
+				}
 				break;
 			}
 		}
 		for (var j = 0; j < latest_paylog.length; j++) {
 			if (latest_paylog[j]['net_type_code'] == net_type[i]) {
-				data_array.push(latest_paylog[j]['sum_num']);
+				if (latest_paylog[j]['sum_num'] == 0) {
+					data_array.push('0');
+				} else {
+					data_array.push(latest_paylog[j]['sum_num']);
+				}
 				break;
 			}
 		}
 		for (var j = 0; j < latest_stop.length; j++) {
 			if (latest_stop[j]['net_type_code'] == net_type[i]) {
-				data_array.push(latest_stop[j]['sum_num']);
+				if (latest_stop[j]['sum_num'] == 0) {
+					data_array.push('0');
+				} else {
+					data_array.push(latest_stop[j]['sum_num']);
+				}
 				break;
 			}
 		}
