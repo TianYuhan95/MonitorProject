@@ -15,17 +15,18 @@ import java.util.List;
 public class MonitorController {
     @Autowired
     private MonitorService monitorService;
+    @Autowired
+    public NetConfigInfo netConfigInfo;
 
     public static List<LeaveRealFee> list_leave_real_fee = null;
     public static OrderInformation list_orderInformation = null;
     public static List<Paylog> list_payLog = null;
     public static List<StopSum> list_stopSum = null;
     public static TradeInformation list_tradeInformation = null;
-    @Autowired
-    public NetConfigInfo netConfigInfo;
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String Index(Model model){
+
         System.out.println("http://"+netConfigInfo.getIp()+":"+netConfigInfo.getPort());
         try{
             model.addAttribute("server_url", "http://" + netConfigInfo.getIp() + ":" + netConfigInfo.getPort());
